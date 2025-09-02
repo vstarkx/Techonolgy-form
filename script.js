@@ -55,9 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Submitted', payload);
 
     showStep(2);
-    setTimeout(() => {
-      showStep(1);
-    }, 1000);
+  
   });
 
   showStep(1);
