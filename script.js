@@ -15,18 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
     currentStep = step;
     stepEls.forEach(el => el.hidden = el.dataset.step !== String(step));
     if (stepsNav) stepsNav.setAttribute('active-step', String(step));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Wire navigation
+  // Remove explicit Save navigation; rely on submit handler
   if (btnSave) {
-    btnSave.addEventListener('click', (e) => {
-      if (currentStep === 1) {
-        // Simulate save and go to step 2
-        showStep(2);
-      } else {
-        alert('Submit step 2');
-      }
-    });
+    btnSave.addEventListener('click', () => { /* submit handler will handle step transitions */ });
   }
 
   if (btnBack) {
@@ -44,6 +38,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // On submit: go to step 2, then return to step 1 after 1s
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const payload = Object.fromEntries(data.entries());
+
+    for (const [key] of data.entries()) {
+      if (key.endsWith('[]')) {
+        payload[key.replace('[]', '')] = data.getAll(key);
+        delete payload[key];
+      }
+    }
+
+    console.log('Submitted', payload);
+
+    showStep(2);
+    setTimeout(() => {
+      showStep(1);
+    }, 1000);
+  });
 
   showStep(1);
 });
