@@ -41,13 +41,16 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .block { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
 .block.with-divider { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
+/* Constrain fields to 680px as per spec */
+.step .field { max-width: 680px; }
+
 /* Radios */
 .radios { display: flex; gap: 20px; }
 .radio { display: inline-flex; align-items: center; gap: 10px; }
 .radio input { width: 16px; height: 16px; accent-color: var(--primary); }
 
 /* Table-like layout */
-.table-like { display: grid; gap: 0; }
+.table-like { display: grid; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
 .thead .tr, .tbody .tr { display: grid; grid-template-columns: 133px 231px 1fr 114px; }
 .w-133 { width: 133px; }
 .w-231 { width: 231px; }
@@ -56,6 +59,13 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 
 .th { background: #F2F2F2; border-bottom: 1px solid var(--border); padding: 15px; color: #858585; font-size: 12px; line-height: 15px; }
 .td { background: #fff; border-bottom: 1px solid var(--border); padding: 20px 15px; font-size: 14px; line-height: 17px; color: var(--text); }
+
+/* Rounded corners on header/footer cells */
+.thead .tr .th:first-child { border-top-left-radius: 10px; }
+.thead .tr .th:last-child { border-top-right-radius: 10px; }
+.tbody .tr:last-child .td:first-child { border-bottom-left-radius: 10px; }
+.tbody .tr:last-child .td:last-child { border-bottom-right-radius: 10px; }
+
 .link-btn { background: none; border: none; color: #292929; cursor: pointer; text-decoration: underline; padding: 0; }
 
 /* CTA row */
