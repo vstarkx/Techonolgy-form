@@ -5,88 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Propose Technology</title>
   <link rel="stylesheet" href="style.css">
+  <script type="module" src="components/header/header.js"></script>
+  <script type="module" src="components/steps/steps.js"></script>
 </head>
 <body>
-  <header class="app-header">
-    <div class="header-inner">
-      <div class="brand">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Public_Investment_Fund_Logo.svg" alt="PIF Logo" class="logo">
-        <span class="app-title">Propose Technology</span>
-      </div>
-      <nav class="steps">
-        <ol>
-          <li class="step active">
-            <span class="num">1</span>
-            <span class="label">Enter information</span>
-          </li>
-          <li class="step">
-            <span class="num">2</span>
-            <span class="label">Associated challenges</span>
-          </li>
-          <li class="step">
-            <span class="num">3</span>
-            <span class="label">Upload resources</span>
-          </li>
-        </ol>
-      </nav>
-    </div>
-  </header>
+  <pif-header title="Propose Technology"></pif-header>
 
-  <main class="content">
-    <section class="card">
-      <form id="tech-form" class="form-grid">
-        <div class="field">
-          <label>Stage</label>
-          <input type="text" value="Screening" disabled>
-        </div>
-        <div class="field">
-          <label>Technology ID</label>
-          <input type="text" value="78232223" disabled>
-        </div>
-        <div class="field full">
-          <label>Technology title</label>
-          <input type="text" placeholder="Enter title">
-        </div>
-        <div class="field full">
-          <label>Technology description</label>
-          <textarea rows="4" placeholder="Describe the technology"></textarea>
-        </div>
-        <div class="field full">
-          <label>Technology provider</label>
-          <select>
-            <option>XYZ Smart Transit Solutions</option>
-            <option>ABC Mobility</option>
-            <option>UrbanTech</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label>Owner</label>
-          <input type="text" value="Ibrahim Al-Asiri" disabled>
-        </div>
-        <div class="field full">
-          <label>Technology type</label>
-          <div class="chips" id="tech-type">
-            <button type="button" class="chip selected">AI & ML</button>
-            <button type="button" class="chip selected">Big Data & Analytics</button>
-            <button type="button" class="chip">IoT</button>
+  <div class="layout">
+    <steps-sidebar active-step="1"></steps-sidebar>
+
+    <main class="content">
+      <section class="card">
+        <form id="tech-form" class="form-grid">
+          <div class="field">
+            <label>Stage</label>
+            <input type="text" value="Screening" disabled>
           </div>
-        </div>
-        <div class="field full">
-          <label>Associated sector</label>
-          <input type="text" value="Mobility" disabled>
-        </div>
-        <div class="field full">
-          <label>Technology source</label>
-          <div class="checkboxes">
-            <label><input type="checkbox" checked> Desktop Research</label>
-            <label><input type="checkbox"> VC</label>
-            <label><input type="checkbox" checked> Expos and conferences</label>
-            <label><input type="checkbox" checked> Innovation Hub</label>
+          <div class="field">
+            <label>Technology ID</label>
+            <input type="text" value="78232223" disabled>
           </div>
-        </div>
-      </form>
-    </section>
-  </main>
+          <div class="field full">
+            <label>Technology title</label>
+            <input type="text" placeholder="Enter title">
+          </div>
+          <div class="field full">
+            <label>Technology description</label>
+            <textarea rows="4" placeholder="Describe the technology"></textarea>
+          </div>
+          <div class="field full">
+            <label>Technology provider</label>
+            <select>
+              <option>XYZ Smart Transit Solutions</option>
+              <option>ABC Mobility</option>
+              <option>UrbanTech</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label>Owner</label>
+            <input type="text" value="Ibrahim Al-Asiri" disabled>
+          </div>
+          <div class="field full">
+            <label>Technology type</label>
+            <div class="chips" id="tech-type">
+              <button type="button" class="chip selected">AI & ML</button>
+              <button type="button" class="chip selected">Big Data & Analytics</button>
+              <button type="button" class="chip">IoT</button>
+            </div>
+          </div>
+          <div class="field full">
+            <label>Associated sector</label>
+            <input type="text" value="Mobility" disabled>
+          </div>
+          <div class="field full">
+            <label>Technology source</label>
+            <div class="checkboxes">
+              <label><input type="checkbox" checked> Desktop Research</label>
+              <label><input type="checkbox"> VC</label>
+              <label><input type="checkbox" checked> Expos and conferences</label>
+              <label><input type="checkbox" checked> Innovation Hub</label>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
 
   <footer class="app-footer">
     <div class="footer-inner">
