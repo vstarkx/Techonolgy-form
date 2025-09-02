@@ -1,13 +1,13 @@
 :root {
   --bg: #f7f7f7;
   --surface: #ffffff;
-  --text: #1f2937;
+  --text: #292929;
   --muted: #6b7280;
-  --primary: #d97706; /* warm accent */
-  --primary-700: #b45309;
-  --border: #e5e7eb;
-  --chip: #f3f4f6;
-  --chip-border: #e5e7eb;
+  --primary: #bc6322; /* brand accent from spec */
+  --primary-700: #9e4f17;
+  --border: #d9d9d9;
+  --chip: #ebebeb;
+  --chip-border: #d9d9d9;
   --focus: #2563eb;
   --sidebar-width: 250px;
 }
@@ -37,22 +37,65 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 
 /* Content */
 .content { max-width: 1200px; margin: 24px auto; padding: 0 24px 120px; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
-.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; }
-.field { display: flex; flex-direction: column; gap: 8px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 30px; }
+
+/* Single-column form sized to 680px like spec */
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 680px; }
+.field { display: flex; flex-direction: column; gap: 5px; }
 .field.full { grid-column: 1 / -1; }
-label { font-size: 12px; color: var(--muted); }
-input[type="text"], textarea, select { appearance: none; border: 1px solid var(--border); border-radius: 8px; background: #f9fafb; padding: 12px 14px; font-size: 14px; color: var(--text); }
-input[disabled], textarea[disabled] { color: #6b7280; background: #f3f4f6; }
+
+/* Labels */
+label { font-size: 14px; line-height: 17px; font-weight: 500; color: var(--text); }
+
+/* Inputs */
+input[type="text"], textarea, select {
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 15px 20px;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--text);
+  min-height: 46px;
+}
+
+/* Disabled state matches #EBEBEB with #B8B8B8 border */
+input[disabled], textarea[disabled] {
+  color: var(--text);
+  background: #ebebeb;
+  border-color: #b8b8b8;
+}
+
 textarea { resize: vertical; }
 
-/* Chips */
-.chips { display: flex; gap: 8px; flex-wrap: wrap; }
-.chip { border: 1px solid var(--chip-border); background: var(--chip); color: var(--text); padding: 6px 10px; border-radius: 999px; font-size: 12px; cursor: pointer; }
-.chip.selected { border-color: var(--primary); background: #fff7ed; color: var(--primary-700); }
+/* Select basic chevron alignment (fallback) */
+select {
+  background-image: linear-gradient(45deg, transparent 50%, #858585 50%), linear-gradient(135deg, #858585 50%, transparent 50%);
+  background-position: calc(100% - 20px) 20px, calc(100% - 15px) 20px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
 
-.checkboxes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; }
-.checkboxes label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); }
+/* Chips as rounded tags */
+.chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.chip {
+  border: none;
+  background: #ebebeb;
+  color: var(--text);
+  padding: 3px 15px;
+  height: 30px;
+  line-height: 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.chip.selected { outline: 2px solid var(--chip-border); }
+
+/* Checkboxes: use brand accent */
+.checkboxes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.checkboxes input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); }
+.checkboxes label { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
 
 /* Footer */
 .app-footer { position: fixed; left: var(--sidebar-width); right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--border); }
@@ -63,10 +106,10 @@ textarea { resize: vertical; }
 .btn-secondary:hover { background: #f9fafb; }
 
 /* Responsive */
+@media (max-width: 1200px) { .content { padding-right: 16px; padding-left: 16px; } }
 @media (max-width: 960px) {
-  .header-inner { grid-template-columns: 1fr; align-items: start; }
-  .form-grid { grid-template-columns: 1fr; }
-  .checkboxes { grid-template-columns: 1fr; }
   .layout { display: block; }
+  .form-grid { max-width: 100%; }
+  .checkboxes { grid-template-columns: 1fr; }
   .app-footer { left: 0; }
 }
