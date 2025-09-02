@@ -15,7 +15,7 @@ template.innerHTML = `
 </style>
 <header class="header">
   <div class="left">
-    <img class="logo" src="components/header/logo.svg" alt="PIF Logo" />
+    <img class="logo" src="components/header/header.png" alt="PIF Logo" />
   </div>
   <div class="right">
     <div class="bar">
