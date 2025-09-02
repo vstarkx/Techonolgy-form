@@ -116,7 +116,7 @@ select {
 
 /* Multiselect */
 .multiselect { position: relative; border: 1px solid var(--border); border-radius: 10px; background: #FFFFFF; min-height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 8px 20px; gap: 20px; }
-.multiselect-values { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 auto; justify-content: center; width: 100%; }
+.multiselect-values { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 auto; justify-content: flex-start; width: 100%; }
 .multiselect .chip { background: #EBEBEB; border-radius: 30px; height: 30px; padding: 3px 15px; display: inline-flex; align-items: center; gap: 10px; border: 0; }
 .chip .chip-remove { width: 20px; height: 20px; display: inline-block; position: relative;    border: 1.9px solid;
     border-radius: 6px; }
