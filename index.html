@@ -47,10 +47,10 @@
           </div>
           <div class="field full">
             <label>Technology type</label>
-            <div class="chips" id="tech-type">
-              <button type="button" class="chip selected">AI & ML</button>
-              <button type="button" class="chip selected">Big Data & Analytics</button>
-              <button type="button" class="chip">IoT</button>
+            <div class="multiselect" id="tech-type" data-name="technologyTypes[]" data-options='["AI & ML","Big Data & Analytics","IoT","Robotics","Cloud"]'>
+              <div class="multiselect-values" aria-live="polite"></div>
+              <button type="button" class="multiselect-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Open options"></button>
+              <div class="multiselect-menu" role="listbox" aria-multiselectable="true"></div>
             </div>
           </div>
           <div class="field full">
