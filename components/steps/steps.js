@@ -6,7 +6,7 @@ stepsTemplate.innerHTML = `
   .sidebar {
     /* Frame 2078546411 */
     display: flex; flex-direction: column; align-items: flex-start; padding: 20px;
-    width: 250px; background: #FFFFFF; border-right: 1px solid #D9D9D9;
+    width: 210.5px; background: #FFFFFF; border-right: 1px solid #D9D9D9;
     min-height: calc(100vh - 80px); /* below 80px header */
   }
   .stack { display: flex; flex-direction: column; align-items: flex-start; padding: 0; gap: 20px; width: 100%; }
