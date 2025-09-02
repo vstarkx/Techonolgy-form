@@ -12,10 +12,10 @@
   <pif-header title="Propose Technology"></pif-header>
 
   <div class="layout">
-    <steps-sidebar active-step="1"></steps-sidebar>
+    <steps-sidebar id="stepsNav" active-step="1"></steps-sidebar>
 
     <main class="content">
-      <section class="card">
+      <section class="card step" data-step="1">
         <form id="tech-form" class="form-grid">
           <div class="field">
             <label>Stage</label>
@@ -67,6 +67,82 @@
             </div>
           </div>
         </form>
+      </section>
+
+      <section class="card step" data-step="2" hidden>
+        <div class="info-banner" role="note">
+          <span class="info-icon" aria-hidden="true"></span>
+          <span>Proposed technologies will be parked under Screening. They will be reviewed by the Sector Lead for final approval from the Innovation Leadership.</span>
+        </div>
+
+        <div class="block">
+          <div class="field full">
+            <label>Potential DevCos</label>
+            <div class="multiselect" id="devcos" data-name="devcos[]" data-options='["NEOM","Saudi Railway Company","ARDARA","Red Sea Global"]' data-selected="NEOM|Saudi Railway Company">
+              <div class="multiselect-values" aria-live="polite"></div>
+              <button type="button" class="multiselect-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Open options"></button>
+              <div class="multiselect-menu" role="listbox" aria-multiselectable="true"></div>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Relevant to a business challenge</label>
+            <div class="radios">
+              <label class="radio"><input type="radio" name="relevant" value="yes" checked> Yes</label>
+              <label class="radio"><input type="radio" name="relevant" value="no"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="block with-divider">
+          <div class="table-like" role="table" aria-label="Challenges table">
+            <div class="thead" role="rowgroup">
+              <div class="tr" role="row">
+                <div class="th w-133" role="columnheader">DevCo</div>
+                <div class="th w-231" role="columnheader">Business challenge</div>
+                <div class="th w-459" role="columnheader">How this technology solves it</div>
+                <div class="th w-114" role="columnheader">Action</div>
+              </div>
+            </div>
+            <div class="tbody" role="rowgroup">
+              <div class="tr" role="row">
+                <div class="td w-133" role="cell">NEOM</div>
+                <div class="td w-231" role="cell">Traffic Congestion</div>
+                <div class="td w-459" role="cell">AI-driven demand prediction optimizes fleet allocation and reduces peak-time congestion.</div>
+                <div class="td w-114" role="cell"><button type="button" class="link-btn">Add</button></div>
+              </div>
+              <div class="tr" role="row">
+                <div class="td w-133" role="cell">ARDARA</div>
+                <div class="td w-231" role="cell">Lack of Transport Integration</div>
+                <div class="td w-459" role="cell">Unified ticketing and data interoperability layers connect bus, metro, and last-mile.</div>
+                <div class="td w-114" role="cell"><button type="button" class="link-btn">Add</button></div>
+              </div>
+              <div class="tr" role="row">
+                <div class="td w-133" role="cell">Red Sea Global</div>
+                <div class="td w-231" role="cell">Limited Data for Planning</div>
+                <div class="td w-459" role="cell">IoT sensors + analytics provide real-time utilization insights for better planning.</div>
+                <div class="td w-114" role="cell"><button type="button" class="link-btn">Add</button></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-row">
+            <button type="button" class="btn btn-primary pill">Add relevant challenge</button>
+            <button type="button" class="btn btn-outline pill">Select from library</button>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="field full">
+            <label>Select Added Value</label>
+            <div class="checkboxes">
+              <label><input type="checkbox"> Cost reduction</label>
+              <label><input type="checkbox" checked> Time saving</label>
+              <label><input type="checkbox"> Risk reduction</label>
+              <label><input type="checkbox"> Customer satisfaction</label>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   </div>

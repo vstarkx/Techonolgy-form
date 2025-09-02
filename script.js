@@ -2,42 +2,50 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize custom multiselect(s)
   document.querySelectorAll('.multiselect').forEach(initMultiselect);
 
-  // Buttons
+  const stepsNav = document.getElementById('stepsNav');
+  const form = document.getElementById('tech-form');
   const btnCancel = document.getElementById('btn-cancel');
   const btnBack = document.getElementById('btn-back');
-  const form = document.getElementById('tech-form');
+  const btnSave = document.getElementById('btn-save');
 
-  if (btnCancel) {
-    btnCancel.addEventListener('click', () => {
-      if (confirm('Discard changes and exit?')) {
-        form.reset();
-        document.querySelectorAll('.multiselect').forEach(ms => resetMultiselect(ms));
+  const stepEls = Array.from(document.querySelectorAll('.step'));
+  let currentStep = 1;
+
+  function showStep(step) {
+    currentStep = step;
+    stepEls.forEach(el => el.hidden = el.dataset.step !== String(step));
+    if (stepsNav) stepsNav.setAttribute('active-step', String(step));
+  }
+
+  // Wire navigation
+  if (btnSave) {
+    btnSave.addEventListener('click', (e) => {
+      if (currentStep === 1) {
+        // Simulate save and go to step 2
+        showStep(2);
+      } else {
+        alert('Submit step 2');
       }
     });
   }
 
   if (btnBack) {
     btnBack.addEventListener('click', () => {
-      alert('Back to previous step');
+      if (currentStep > 1) showStep(currentStep - 1);
     });
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const data = new FormData(form);
-    const payload = Object.fromEntries(data.entries());
-
-    // Multi-value fields with [] become arrays
-    for (const [key] of data.entries()) {
-      if (key.endsWith('[]')) {
-        payload[key.replace('[]', '')] = data.getAll(key);
-        delete payload[key];
+  if (btnCancel) {
+    btnCancel.addEventListener('click', () => {
+      if (confirm('Discard changes and exit?')) {
+        form?.reset();
+        document.querySelectorAll('.multiselect').forEach(ms => resetMultiselect(ms));
+        showStep(1);
       }
-    }
+    });
+  }
 
-    console.log('Saving...', payload);
-    alert('Saved! Proceeding to next step.');
-  });
+  showStep(1);
 });
 
 function initMultiselect(container) {
@@ -49,7 +57,6 @@ function initMultiselect(container) {
 
   const state = new Set();
 
-  // Render options list
   menuEl.innerHTML = '';
   options.forEach(opt => {
     const optionEl = document.createElement('div');
@@ -58,23 +65,17 @@ function initMultiselect(container) {
     optionEl.setAttribute('aria-selected', 'false');
     optionEl.textContent = opt;
     optionEl.addEventListener('click', () => {
-      if (state.has(opt)) {
-        state.delete(opt);
-      } else {
-        state.add(opt);
-      }
+      if (state.has(opt)) state.delete(opt); else state.add(opt);
       render();
     });
     menuEl.appendChild(optionEl);
   });
 
-  // Toggle open/close
   toggleEl.addEventListener('click', () => {
     const open = container.classList.toggle('open');
     toggleEl.setAttribute('aria-expanded', String(open));
   });
 
-  // Close when clicking outside
   document.addEventListener('click', (e) => {
     if (!container.contains(e.target)) {
       container.classList.remove('open');
@@ -83,13 +84,9 @@ function initMultiselect(container) {
   });
 
   function render() {
-    // Update selected chips
     valuesEl.innerHTML = '';
-
-    // Remove prior hidden inputs
     container.querySelectorAll('input[type="hidden"]').forEach(el => el.remove());
 
-    // Update option selection states and add hidden inputs
     container.querySelectorAll('.multiselect-option').forEach(el => {
       const label = el.textContent || '';
       const selected = state.has(label);
@@ -115,18 +112,17 @@ function initMultiselect(container) {
 
   function resetToDefaults() {
     state.clear();
+    const preselected = container.getAttribute('data-selected');
+    if (preselected) preselected.split('|').forEach(v => state.add(v));
     render();
   }
 
-  // expose reset
   container.__reset = resetToDefaults;
 
-  // Preselect from any data-selected attribute or initial chips (optional)
   const preselected = container.getAttribute('data-selected');
   if (preselected) {
     preselected.split('|').forEach(v => state.add(v));
   } else {
-    // Default example selection
     ['AI & ML', 'Big Data & Analytics'].forEach(v => { if (options.includes(v)) state.add(v); });
   }
   render();
