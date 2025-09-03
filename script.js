@@ -18,8 +18,22 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // Save & Continue behavior:
+  // - On step 1: allow form submit (handled below)
+  // - On step 2: prevent submit and go to step 3
+  // - On step 3: keep on step 3 (could finalize later)
   if (btnSave) {
-    btnSave.addEventListener('click', () => { /* submit handler will handle step transitions */ });
+    btnSave.addEventListener('click', (e) => {
+      if (currentStep === 2) {
+        e.preventDefault();
+        showStep(3);
+      } else if (currentStep === 3) {
+        e.preventDefault();
+        // Keep on step 3 or implement final submit here
+        console.log('Step 3 save clicked');
+      }
+      // If currentStep === 1, we let the submit handler run
+    });
   }
 
   if (btnBack) {
