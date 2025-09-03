@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Pilot</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="../components/header/header.js"></script>
+  <script type="module" src="../components/steps/steps.js"></script>
+</head>
+<body>
+  <pif-header title="Create Pilot"></pif-header>
+
+  <div class="layout">
+    <steps-sidebar id="stepsNav" labels="Pilot information|Attachments" active-step="1"></steps-sidebar>
+
+    <main class="content">
+      <section class="card step" data-step="1">
+        <form id="pilot-form" class="form-grid">
+          <div class="field full">
+            <label>Pilot title</label>
+            <input type="text" placeholder="Enter pilot title" required>
+          </div>
+          <div class="field full">
+            <label>Objective</label>
+            <textarea rows="4" placeholder="What is the goal?" required></textarea>
+          </div>
+          <div class="field">
+            <label>DevCo</label>
+            <input type="text" placeholder="e.g., NEOM" required>
+          </div>
+          <div class="field">
+            <label>Timeline</label>
+            <input type="text" placeholder="Q3 2025">
+          </div>
+          <div class="field">
+            <label>Estimated budget (USD)</label>
+            <input type="text" placeholder="250,000">
+          </div>
+          <div class="field">
+            <label>Owner</label>
+            <input type="text" placeholder="Your name">
+          </div>
+        </form>
+      </section>
+
+      <section class="card step" data-step="2" hidden>
+        <div class="block">
+          <div class="field full">
+            <label>Attachments</label>
+            <div class="attachments-card">
+              <div class="attachments-head">
+                <div class="title">Upload Documents</div>
+                <div class="subtitle">PDF, DOCX and images are allowed</div>
+              </div>
+              <div class="dropzone" id="dropzone" role="button" tabindex="0">
+                <div class="dropzone-inner">
+                  <div class="cloud-icon" aria-hidden="true"></div>
+                  <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose files</div>
+                </div>
+                <input id="file-input" type="file" multiple hidden>
+              </div>
+            </div>
+          </div>
+          <div class="file-list" id="file-list" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="left-actions">
+        <button type="button" id="btn-cancel" class="btn btn-secondary">Cancel</button>
+      </div>
+      <div class="right-actions">
+        <button type="button" id="btn-back" class="btn btn-secondary">Back</button>
+        <button type="submit" form="pilot-form" id="btn-save" class="btn btn-primary">Save and Continue</button>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
