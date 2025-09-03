@@ -41,13 +41,16 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .block { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
 .block.with-divider { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
+/* Constrain fields to 680px as per spec */
+.step .field { max-width: 680px; }
+
 /* Radios */
 .radios { display: flex; gap: 20px; }
 .radio { display: inline-flex; align-items: center; gap: 10px; }
 .radio input { width: 16px; height: 16px; accent-color: var(--primary); }
 
 /* Table-like layout */
-.table-like { display: grid; gap: 0; }
+.table-like { display: grid; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
 .thead .tr, .tbody .tr { display: grid; grid-template-columns: 133px 231px 1fr 114px; }
 .w-133 { width: 133px; }
 .w-231 { width: 231px; }
@@ -56,6 +59,13 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 
 .th { background: #F2F2F2; border-bottom: 1px solid var(--border); padding: 15px; color: #858585; font-size: 12px; line-height: 15px; }
 .td { background: #fff; border-bottom: 1px solid var(--border); padding: 20px 15px; font-size: 14px; line-height: 17px; color: var(--text); }
+
+/* Rounded corners on header/footer cells */
+.thead .tr .th:first-child { border-top-left-radius: 10px; }
+.thead .tr .th:last-child { border-top-right-radius: 10px; }
+.tbody .tr:last-child .td:first-child { border-bottom-left-radius: 10px; }
+.tbody .tr:last-child .td:last-child { border-bottom-right-radius: 10px; }
+
 .link-btn { background: none; border: none; color: #292929; cursor: pointer; text-decoration: underline; padding: 0; }
 
 /* CTA row */
@@ -151,8 +161,8 @@ select {
 }
 
 /* Multiselect */
-.multiselect { position: relative; border: 1px solid var(--border); border-radius: 10px; background: #FFFFFF; min-height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 8px 20px; gap: 20px; }
-.multiselect-values { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 auto; justify-content: flex-start; width: 100%; }
+.multiselect { position: relative; border: 1px solid var(--border); border-radius: 10px; background: #FFFFFF; min-height: 46px; display: flex; align-items: center; justify-content: center; padding: 8px 20px; gap: 20px; padding-right: 48px; }
+.multiselect-values { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 auto; justify-content: center; width: 100%; }
 .multiselect .chip { background: #EBEBEB; border-radius: 30px; height: 30px; padding: 3px 15px; display: inline-flex; align-items: center; gap: 10px; border: 0; }
 .chip .chip-remove { width: 20px; height: 20px; display: inline-block; position: relative;    border: 1.9px solid;
     border-radius: 6px; }
@@ -167,7 +177,7 @@ select {
 .chip .chip-remove:before { transform: rotate(45deg); }
 .chip .chip-remove:after { transform: rotate(-45deg); }
 
-.multiselect-toggle { width: 24px; height: 24px; border: none; background: transparent; position: relative; flex: 0 0 auto; }
+.multiselect-toggle { width: 24px; height: 24px; border: none; background: transparent; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); }
 .multiselect-toggle:after { content: ""; position: absolute; right: 0; top: 9px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid #858585; }
 
 .multiselect-menu { position: absolute; left: 0; right: 0; top: calc(100% + 6px); background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px; display: none; z-index: 20; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
