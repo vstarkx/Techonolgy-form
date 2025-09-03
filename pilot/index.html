@@ -118,6 +118,24 @@
               <option>Operations Team</option>
             </select>
           </div>
+
+          <div class="field full">
+            <label>Attachments</label>
+            <div class="attachments-card">
+              <div class="attachments-head">
+                <div class="title">Upload Images</div>
+                <div class="subtitle">PNG, JPG and GIF files are allowed</div>
+              </div>
+              <div class="dropzone" id="pt-dropzone" role="button" tabindex="0">
+                <div class="dropzone-inner">
+                  <div class="cloud-icon" aria-hidden="true"></div>
+                  <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose a file</div>
+                </div>
+                <input id="pt-file-input" type="file" multiple hidden>
+              </div>
+            </div>
+          </div>
+          <div class="file-list" id="pt-file-list" aria-live="polite"></div>
         </form>
       </section>
 

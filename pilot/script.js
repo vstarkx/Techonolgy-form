@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSave?.addEventListener('click', (e) => {
     if (currentStep === 1) {
       e.preventDefault();
-      // basic required validation by calling checkValidity
       if (!form.checkValidity()) { form.reportValidity(); return; }
       showStep(2);
     }
@@ -25,27 +24,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnBack?.addEventListener('click', () => { if (currentStep > 1) showStep(currentStep - 1); });
 
-  // Attachments simple logic
-  const dropzone = document.getElementById('dropzone');
-  const fileInput = document.getElementById('file-input');
-  const fileList = document.getElementById('file-list');
-
-  function addFiles(files) {
-    Array.from(files).forEach(f => {
-      const item = document.createElement('div');
-      item.className = 'file-item';
-      item.innerHTML = `<div><div class="name">${f.name}</div><div class="size">${(f.size/1024).toFixed(1)} KB</div></div><button type="button" class="btn">Remove</button>`;
-      item.querySelector('button')?.addEventListener('click', () => item.remove());
-      fileList?.appendChild(item);
-    });
+  // Shared helpers
+  function bytesToSize(bytes) { const i = Math.floor(Math.log(bytes || 1)/Math.log(1024)); return ((bytes/Math.pow(1024,i))||0).toFixed(1)+[' B',' KB',' MB',' GB'][i]; }
+  function wireDropZone(zoneId, inputId, listId) {
+    const dropzone = document.getElementById(zoneId);
+    const fileInput = document.getElementById(inputId);
+    const fileList = document.getElementById(listId);
+    function addFiles(files) {
+      Array.from(files).forEach(f => {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.innerHTML = `<div><div class="name">${f.name}</div><div class="size">${bytesToSize(f.size)}</div></div><button type=\"button\" class=\"btn\">Remove</button>`;
+        item.querySelector('button')?.addEventListener('click', () => item.remove());
+        fileList?.appendChild(item);
+      });
+    }
+    dropzone?.addEventListener('click', (e) => { if ((e.target).closest && (e.target).closest('[data-action="browse"]')) fileInput?.click(); });
+    dropzone?.addEventListener('dragover', (e) => { e.preventDefault(); });
+    dropzone?.addEventListener('drop', (e) => { e.preventDefault(); if (e.dataTransfer?.files) addFiles(e.dataTransfer.files); });
+    fileInput?.addEventListener('change', () => { if (fileInput.files) addFiles(fileInput.files); fileInput.value = ''; });
   }
 
-  dropzone?.addEventListener('click', (e) => {
-    if ((e.target).closest && (e.target).closest('[data-action="browse"]')) fileInput?.click();
-  });
-  dropzone?.addEventListener('dragover', (e) => { e.preventDefault(); });
-  dropzone?.addEventListener('drop', (e) => { e.preventDefault(); if (e.dataTransfer?.files) addFiles(e.dataTransfer.files); });
-  fileInput?.addEventListener('change', () => { if (fileInput.files) addFiles(fileInput.files); fileInput.value = ''; });
+  // Step 1 attachments
+  wireDropZone('pt-dropzone', 'pt-file-input', 'pt-file-list');
+  // Step 2 attachments
+  wireDropZone('dropzone', 'file-input', 'file-list');
 
   showStep(1);
 });
