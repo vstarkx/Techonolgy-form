@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Pilot</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="../components/header/header.js"></script>
+  <script type="module" src="../components/steps/steps.js"></script>
+</head>
+<body>
+  <pif-header title="Create Pilot"></pif-header>
+
+  <div class="layout">
+    <steps-sidebar id="stepsNav" labels="Pilot information|Attachments" active-step="1"></steps-sidebar>
+
+    <main class="content">
+      <section class="card step" data-step="1">
+        <form id="pilot-form" class="form-grid form-620">
+          <div class="field full">
+            <label>Pilot name</label>
+            <input type="text" placeholder="Riyadh's Public Transit System" required>
+            <div class="note">The name of the pilot cannot be modified during the lifecycle.</div>
+          </div>
+
+          <div class="field full">
+            <label>Pilot description</label>
+            <textarea rows="5" placeholder="Describe the pilot" required></textarea>
+            <div class="note">Provide a brief overview of the pilot.</div>
+          </div>
+
+          <div class="field full">
+            <label>Objective</label>
+            <textarea rows="4" placeholder="What is the goal?" required></textarea>
+          </div>
+
+          <div class="field full">
+            <label>Location</label>
+            <select>
+              <option>Riyadh</option>
+              <option>Jeddah</option>
+              <option>NEOM</option>
+            </select>
+          </div>
+
+          <div class="row-2">
+            <div class="field">
+              <label>Pilot budget currency</label>
+              <select>
+                <option>SAR (Saudi Riyals)</option>
+                <option>USD (US Dollar)</option>
+                <option>EUR (Euro)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Pilot estimated budget</label>
+              <input type="text" placeholder="245 M">
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Funded by</label>
+            <div class="checkboxes">
+              <label><input type="checkbox" checked> Innovation Hub</label>
+              <label><input type="checkbox"> DevCo</label>
+              <label><input type="checkbox"> Sector budget</label>
+              <label><input type="checkbox"> Other</label>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Technology Solution</label>
+            <select>
+              <option>Smart Mobility Platform with Real-Time Data Integration</option>
+              <option>Autonomous Shuttle Service</option>
+              <option>Unified Ticketing System</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Associated sector</label>
+            <input type="text" value="Mobility" disabled>
+          </div>
+
+          <div class="field full">
+            <label>Technology solution provider</label>
+            <select>
+              <option>XYZ Smart Transit Solutions</option>
+              <option>UrbanTech</option>
+              <option>ABC Mobility</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>DevCo leading this pilot</label>
+            <select>
+              <option>Saudi Railway Company</option>
+              <option>NEOM</option>
+              <option>Red Sea Global</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Pilot Lead</label>
+            <select>
+              <option>Ahmed Al-Fahad</option>
+              <option>Ibrahim Al-Asiri</option>
+              <option>Fatimah Al-Harbi</option>
+            </select>
+            <div class="note">The name of the pilot cannot be modified during the lifecycle.</div>
+          </div>
+
+          <div class="field full">
+            <label>Pilot Team</label>
+            <select>
+              <option>Urban Mobility Team</option>
+              <option>Data & Analytics Team</option>
+              <option>Operations Team</option>
+            </select>
+          </div>
+        </form>
+      </section>
+
+      <section class="card step" data-step="2" hidden>
+        <div class="block">
+          <div class="field full">
+            <label>Attachments</label>
+            <div class="attachments-card">
+              <div class="attachments-head">
+                <div class="title">Upload Images</div>
+                <div class="subtitle">PNG, JPG and GIF files are allowed</div>
+              </div>
+              <div class="dropzone" id="dropzone" role="button" tabindex="0">
+                <div class="dropzone-inner">
+                  <div class="cloud-icon" aria-hidden="true"></div>
+                  <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose a file</div>
+                </div>
+                <input id="file-input" type="file" multiple hidden>
+              </div>
+            </div>
+          </div>
+          <div class="file-list" id="file-list" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="left-actions">
+        <button type="button" id="btn-cancel" class="btn btn-secondary">Cancel</button>
+      </div>
+      <div class="right-actions">
+        <button type="button" id="btn-back" class="btn btn-secondary">Back</button>
+        <button type="submit" form="pilot-form" id="btn-save" class="btn btn-primary">Save and Continue</button>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
