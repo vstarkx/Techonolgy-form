@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnBack?.addEventListener('click', () => { if (currentStep > 1) showStep(currentStep - 1); });
 
-  // Shared helpers
-  function bytesToSize(bytes) { const i = Math.floor(Math.log(bytes || 1)/Math.log(1024)); return ((bytes/Math.pow(1024,i))||0).toFixed(1)+[' B',' KB',' MB',' GB'][i]; }
+  function bytesToSize(bytes) { const sizes=['B','KB','MB','GB']; if(!bytes) return '0 B'; const i=Math.floor(Math.log(bytes)/Math.log(1024)); return (bytes/Math.pow(1024,i)).toFixed(1)+' '+sizes[i]; }
+
   function wireDropZone(zoneId, inputId, listId) {
     const dropzone = document.getElementById(zoneId);
     const fileInput = document.getElementById(inputId);
@@ -34,20 +34,27 @@ document.addEventListener('DOMContentLoaded', () => {
       Array.from(files).forEach(f => {
         const item = document.createElement('div');
         item.className = 'file-item';
-        item.innerHTML = `<div><div class="name">${f.name}</div><div class="size">${bytesToSize(f.size)}</div></div><button type=\"button\" class=\"btn\">Remove</button>`;
-        item.querySelector('button')?.addEventListener('click', () => item.remove());
+        item.innerHTML = `
+          <div class="meta">
+            <div class="name">${f.name}</div>
+            <div class="size">${bytesToSize(f.size)}</div>
+          </div>
+          <div class="file-actions">
+            <span class="icon" title="Open"></span>
+            <span class="icon delete" title="Remove"></span>
+          </div>
+        `;
+        item.querySelector('.delete')?.addEventListener('click', () => item.remove());
         fileList?.appendChild(item);
       });
     }
     dropzone?.addEventListener('click', (e) => { if ((e.target).closest && (e.target).closest('[data-action="browse"]')) fileInput?.click(); });
     dropzone?.addEventListener('dragover', (e) => { e.preventDefault(); });
     dropzone?.addEventListener('drop', (e) => { e.preventDefault(); if (e.dataTransfer?.files) addFiles(e.dataTransfer.files); });
-    fileInput?.addEventListener('change', () => { if (fileInput.files) addFiles(fileInput.files); fileInput.value = ''; });
+    fileInput?.addEventListener('change', () => { if (fileInput.files) addFiles(fileInput.files); fileInput.value=''; });
   }
 
-  // Step 1 attachments
   wireDropZone('pt-dropzone', 'pt-file-input', 'pt-file-list');
-  // Step 2 attachments
   wireDropZone('dropzone', 'file-input', 'file-list');
 
   showStep(1);
