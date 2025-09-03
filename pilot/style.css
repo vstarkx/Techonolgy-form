@@ -41,6 +41,19 @@ input[type="text"], textarea { border: 1px solid var(--border); border-radius: 1
 .btn { border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; background: #fff; cursor: pointer; }
 .btn.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
 
+.form-620 { max-width: 680px; }
+.form-620 .field { max-width: 620px; }
+.row-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px; max-width: 620px; }
+
+select { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 14px; background: #fff; }
+.note { font-size: 12px; color: #858585; margin-top: 4px; }
+
+.checkboxes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; max-width: 680px; }
+.checkboxes input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); }
+.checkboxes label { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+
+@media (max-width: 960px) { .row-2 { grid-template-columns: 1fr; } .checkboxes { grid-template-columns: 1fr; } }
+
 @media (max-width: 960px) {
   .layout { display: block; }
   .app-footer { left: 0; }
