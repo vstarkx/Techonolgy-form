@@ -36,6 +36,10 @@ input[type="text"], textarea { border: 1px solid var(--border); border-radius: 1
 .file-item .name { font-weight: 500; }
 .file-item .size { font-size: 12px; color: #858585; }
 
+.file-actions { display: flex; gap: 20px; }
+.file-actions .icon { width: 20px; height: 20px; background: var(--primary); mask: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path fill=\"white\" d=\"M14 2H6a2 2 0 0 0-2 2v16l4-4h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z\"/></svg>') center / contain no-repeat; }
+.file-actions .icon.delete { background: var(--primary); mask: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path fill=\"white\" d=\"M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zm3.46-8.12l1.41-1.41L12 10.59l1.12-1.12l1.41 1.41L13.41 12l1.12 1.12l-1.41 1.41L12 13.41l-1.12 1.12l-1.41-1.41L10.59 12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z\"/></svg>') center / contain no-repeat; }
+
 .app-footer { position: fixed; left: var(--sidebar-width); right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--border); }
 .footer-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; gap: 16px; }
 .btn { border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; background: #fff; cursor: pointer; }
