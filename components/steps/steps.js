@@ -7,6 +7,7 @@ stepsTemplate.innerHTML = `
     display: flex; flex-direction: column; align-items: flex-start; padding: 20px;
     width: 210.5px; background: #FFFFFF; border-right: 1px solid #D9D9D9;
     min-height: calc(100vh - 80px);
+    height:100%;
   }
   .stack { display: flex; flex-direction: column; align-items: flex-start; padding: 0; gap: 20px; width: 100%; }
   .item { display: flex; flex-direction: row; align-items: center; padding: 0; gap: 10px; height: 34px; }
