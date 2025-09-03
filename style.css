@@ -158,6 +158,18 @@ select {
   .thead .tr, .tbody .tr { grid-template-columns: 1fr; }
   .th, .td { width: auto; }
   .cta-row { grid-template-columns: 1fr; }
+  /* Collapse table into labeled cards */
+  .table-like { border: none; }
+  .table-like .thead { display: none; }
+  .tbody .tr { grid-template-columns: 1fr; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+  .tbody .tr .td { border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 10px; }
+  .tbody .tr .td:last-child { border-bottom: none; }
+  .tbody .tr .td::before { content: attr(data-label); color: #858585; font-size: 12px; line-height: 15px; padding-right: 8px; }
+  /* Provide labels using nth-child for existing markup */
+  .tbody .tr .td:nth-child(1)::before { content: "DevCo"; }
+  .tbody .tr .td:nth-child(2)::before { content: "Business challenge"; }
+  .tbody .tr .td:nth-child(3)::before { content: "How this technology solves it"; }
+  .tbody .tr .td:nth-child(4)::before { content: "Action"; }
 }
 
 /* Multiselect */
