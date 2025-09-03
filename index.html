@@ -144,6 +144,29 @@
           </div>
         </div>
       </section>
+
+      <section class="card step" data-step="3" hidden>
+        <div class="block attachments">
+          <div class="field full">
+            <label>Attachments</label>
+            <div class="attachments-card">
+              <div class="attachments-head">
+                <div class="title">Upload Images</div>
+                <div class="subtitle">PNG, JPG and GIF files are allowed</div>
+              </div>
+              <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Drag and drop or browse to choose a file">
+                <div class="dropzone-inner">
+                  <div class="cloud-icon" aria-hidden="true"></div>
+                  <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose a file</div>
+                </div>
+                <input id="file-input" type="file" accept="image/png,image/jpeg,image/gif" multiple hidden>
+              </div>
+            </div>
+          </div>
+
+          <div class="file-list" id="file-list" aria-live="polite"></div>
+        </div>
+      </section>
     </main>
   </div>
 
