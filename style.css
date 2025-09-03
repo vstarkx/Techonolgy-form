@@ -197,3 +197,27 @@ select {
 .multiselect-option { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
 .multiselect-option[aria-selected="true"] { background: #fff7ed; outline: 1px solid var(--border); }
 .multiselect-option:hover { background: #f9fafb; }
+
+/* Step 3: Attachments */
+.attachments .attachments-card { position: relative; border: 1px solid var(--border); border-radius: 10px; background: #fff; padding: 30px; }
+.attachments .attachments-head { text-align: center; display: grid; gap: 6px; margin-bottom: 15px; }
+.attachments .attachments-head .title { font-size: 14px; line-height: 17px; font-weight: 500; color: var(--text); }
+.attachments .attachments-head .subtitle { font-size: 12px; line-height: 15px; color: #b8b8b8; }
+.dropzone { border: 1px dashed var(--border); background: #fbfbfb; border-radius: 10px; padding: 21px; display: grid; place-items: center; cursor: pointer; }
+.dropzone:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+.dropzone-inner { display: grid; gap: 10px; justify-items: center; text-align: center; color: var(--text); }
+.cloud-icon { width: 32px; height: 32px; background: #292929; mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M19 18H6a4 4 0 0 1-.8-7.92A6 6 0 0 1 17.92 7a5 5 0 0 1 1.08 9.89V18Zm-7-7v6h2v-6h3l-4-4l-4 4h3Z"/></svg>') center / contain no-repeat; }
+
+.file-list { display: grid; gap: 10px; margin-top: 20px; }
+.file-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 15px 30px; border: 1px solid #dddddd; border-radius: 10px; background: #fff; }
+.file-item .meta { display: grid; gap: 4px; }
+.file-item .name { font-size: 16px; line-height: 20px; font-weight: 500; color: var(--text); }
+.file-item .size { font-size: 14px; line-height: 17px; color: #858585; }
+.file-actions { display: flex; gap: 20px; }
+.file-actions .icon { width: 20px; height: 20px; background: var(--primary); mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M14 2H6a2 2 0 0 0-2 2v16l4-4h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>') center / contain no-repeat; }
+.file-actions .icon.delete { background: var(--primary); mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zm3.46-8.12l1.41-1.41L12 10.59l1.12-1.12l1.41 1.41L13.41 12l1.12 1.12l-1.41 1.41L12 13.41l-1.12 1.12l-1.41-1.41L10.59 12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg>') center / contain no-repeat; }
+
+@media (max-width: 960px) {
+  .attachments .attachments-card { padding: 20px; }
+  .file-item { padding: 12px 16px; }
+}

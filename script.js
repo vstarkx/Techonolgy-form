@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Remove explicit Save navigation; rely on submit handler
   if (btnSave) {
     btnSave.addEventListener('click', () => { /* submit handler will handle step transitions */ });
   }
@@ -59,6 +58,57 @@ document.addEventListener('DOMContentLoaded', () => {
       showStep(1);
     }, 1000);
   });
+
+  // Step 3: Drag/drop uploads
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('file-input');
+  const fileList = document.getElementById('file-list');
+
+  function bytesToSize(bytes) {
+    const sizes = ['B','KB','MB','GB'];
+    if (bytes === 0) return '0 B';
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+  }
+
+  function addFiles(files) {
+    Array.from(files).forEach(file => {
+      const item = document.createElement('div');
+      item.className = 'file-item';
+      item.innerHTML = `
+        <div class="meta">
+          <div class="name">${file.name}</div>
+          <div class="size">${bytesToSize(file.size)}</div>
+        </div>
+        <div class="file-actions">
+          <span class="icon"></span>
+          <span class="icon delete" title="Remove"></span>
+        </div>
+      `;
+      item.querySelector('.delete').addEventListener('click', () => item.remove());
+      fileList?.appendChild(item);
+    });
+  }
+
+  if (dropzone && fileInput && fileList) {
+    dropzone.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && target.closest('[data-action="browse"]')) {
+        fileInput.click();
+      }
+    });
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('drag'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('drag');
+      if (e.dataTransfer?.files?.length) addFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files?.length) addFiles(fileInput.files);
+      fileInput.value = '';
+    });
+  }
 
   showStep(1);
 });
