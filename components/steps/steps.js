@@ -10,7 +10,7 @@ stepsTemplate.innerHTML = `
     height:100%;
   }
   .stack { display: flex; flex-direction: column; align-items: flex-start; padding: 0; gap: 20px; width: 100%; }
-  .item { display: flex; flex-direction: row; align-items: center; padding: 0 6px; gap: 10px; height: 34px; border-radius: 8px; width:97%}
+  .item { display: flex; flex-direction: row; align-items: center; padding: 0 6px; gap: 10px; height: 50px; border-radius: 3px; width:100%}
   .icon { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 50.6502px; background: transparent; }
   .num { font-family: 'Fund', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial; font-style: normal; font-weight: 300; font-size: 16px; line-height: 20px; color: var(--sidebar-text); display: flex; align-items: center; justify-content: center; width: 16px; }
   .label { font-family: 'Fund', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial; font-style: normal; font-weight: 500; font-size: 14px; line-height: 17px; color: var(--sidebar-text); }
