@@ -42,7 +42,7 @@ input[type="text"], textarea { border: 1px solid var(--border); border-radius: 1
 
 .app-footer { position: fixed; left: var(--sidebar-width); right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--border); }
 .footer-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; gap: 16px; }
-.btn { border: 1px solid var(--border); border-radius: 45px; padding: 10px 20px; background: #fff; cursor: pointer; }
+.btn { border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; background: #fff; cursor: pointer; }
 .btn.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
 
 .form-620 { max-width: 680px; }
