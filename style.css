@@ -19,7 +19,11 @@
   --disabled-text: #6b7280;
   --sidebar-bg: #ffffff;
   --sidebar-text: #292929;
-  --sidebar-active-bg: rgba(188, 99, 34, 0.08);
+  --sidebar-active-bg: #ffffff;
+    --step-n-border: #C4984F;
+  --primary: #bc6322; /* brand accent from spec */
+   --step-n-background: #ffffff;
+   --step-n-color:#C4984F;
   --table-header-bg: #F2F2F2;
   --chip-bg: #ebebeb;
 }
@@ -30,7 +34,7 @@
   --surface: #3B3F40;
   --text: #999898;
   --border: #525353;
-
+  --primary: #bc984f; /* brand accent from spec */
   --field-bg: #414547;
   --field-border: #5C6266;
 
@@ -40,10 +44,12 @@
 
   --sidebar-bg: #414547;
   --sidebar-text: #F1F2F3;
-  --sidebar-active-bg: rgba(196, 152, 79, 0.20);
-
+  --sidebar-active-bg: #3B3F40;
+   --step-n-background: #C4984F;
+  --step-n-border: #C4984F;
+   --step-n-color:#3B3F40;
   --table-header-bg: #414547;
-  --chip-bg: #5C6266;
+  --chip-bg: #313435;
 }
 
 * { box-sizing: border-box; }
