@@ -16,7 +16,7 @@ stepsTemplate.innerHTML = `
   .label { font-family: 'Fund', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial; font-style: normal; font-weight: 500; font-size: 14px; line-height: 17px; color: var(--sidebar-text); }
 
   /* Active state (current) */
-  .active { background: var(--sidebar-active-bg); }
+  .active { background: var(--sidebar-active-bg);     border-left: 3px solid var(--step-n-background);}
   .active .icon {
 border-color:var(--step-n-border);
     background: var(--step-n-background); }
