@@ -3,31 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('pilot-form');
   const btnBack = document.getElementById('btn-back');
   const btnSave = document.getElementById('btn-save');
-  const btnSaveOnly = document.getElementById('btn-save-only');
 
   const stepEls = Array.from(document.querySelectorAll('.step'));
   let currentStep = 1;
-
-  function updateBackVisibility() {
-    if (!btnBack) return;
-    btnBack.style.visibility = currentStep > 1 ? 'visible' : 'hidden';
-  }
 
   function showStep(step) {
     currentStep = step;
     stepEls.forEach(el => el.hidden = el.dataset.step !== String(step));
     stepsNav?.setAttribute('active-step', String(step));
-    updateBackVisibility();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  btnSaveOnly?.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-    const data = new FormData(form);
-    console.log('Saved pilot draft', Object.fromEntries(data.entries()));
-    alert('Saved');
-  });
 
   btnSave?.addEventListener('click', (e) => {
     if (currentStep === 1) {
