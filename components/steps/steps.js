@@ -18,8 +18,8 @@ stepsTemplate.innerHTML = `
   /* Active state (current) */
   .active { background: var(--sidebar-active-bg); }
   .active .icon {
-border-color:var(--step-n-border:);
-    background: var(--step-n-background:); }
+border-color:var(--step-n-border);
+    background: var(--step-n-background); }
   .active .num { color: var(  --step-n-color); }
   .active .label { color: #fff; }
 
