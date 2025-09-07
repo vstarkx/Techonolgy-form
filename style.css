@@ -98,7 +98,7 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .w-459 { width: auto; }
 .w-114 { width: 114px; }
 
-.th { background: var(--table-header-bg); border-bottom: 1px solid var(--border); padding: 15px; color: #858585; font-size: 12px; line-height: 15px; }
+.th { background: var(--table-header-bg); border-bottom: 1px solid var(--border); padding: 15px; color: #fff; font-size: 12px; line-height: 15px; }
 .td { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 15px; font-size: 14px; line-height: 17px; color: var(--text); }
 
 /* Rounded corners on header/footer cells */
