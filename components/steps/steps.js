@@ -61,9 +61,9 @@ class StepsSidebar extends HTMLElement {
 
     const labelsAttr = this.getAttribute('labels');
     const labels = labelsAttr ? labelsAttr.split('|') : [
-      'Enter information',
-      'Associated challenges',
-      'Upload resources'
+      'Enter Information',
+      'Associated Challenges',
+      'Upload Resources'
     ];
     const active = parseInt(this.getAttribute('active-step') || '1', 10);
 
