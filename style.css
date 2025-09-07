@@ -250,7 +250,7 @@ select {
 .attachments .attachments-head { text-align: center; display: grid; gap: 6px; margin-bottom: 15px; }
 .attachments .attachments-head .title { font-size: 14px; line-height: 17px; font-weight: 500; color: var(--text); }
 .attachments .attachments-head .subtitle { font-size: 12px; line-height: 15px; color: #b8b8b8; }
-.dropzone { border: 1px dashed var(--border); background: #fbfbfb; border-radius: 10px; padding: 21px; display: grid; place-items: center; cursor: pointer; }
+.dropzone { border: 1px dashed var(--border); background: #fbfbfb; border-radius: 10px; padding: 21px; display: grid; place-items: center; cursor: pointer; background:var(--border)}
 .dropzone:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
 .dropzone-inner { display: grid; gap: 10px; justify-items: center; text-align: center; color: var(--text); }
 .cloud-icon { width: 32px; height: 32px; background: var(--text); mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M19 18H6a4 4 0 0 1-.8-7.92A6 6 0 0 1 17.92 7a5 5 0 0 1 1.08 9.89V18Zm-7-7v6h2v-6h3l-4-4l-4 4h3Z"/></svg>') center / contain no-repeat; }
