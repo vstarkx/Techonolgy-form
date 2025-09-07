@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fragment</title>
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --surface: #ffffff;
+      --text: #292929;
+      --muted: #6b7280;
+      --primary: #bc6322;
+      --primary-700: #9e4f17;
+      --border: #d9d9d9;
+      --chip: #ebebeb;
+      --chip-border: #d9d9d9;
+      --focus: #2563eb;
+      --sidebar-width: 250px;
+
+      --field-bg: #ffffff;
+      --field-border: var(--border);
+      --disabled-bg: #ebebeb;
+      --disabled-border: #b8b8b8;
+      --disabled-text: #6b7280;
+      --sidebar-bg: #ffffff;
+      --sidebar-text: #292929;
+      --sidebar-active-bg: #ffffff;
+      --step-n-border: #C4984F;
+      --step-n-background: #ffffff;
+      --step-n-color: #C4984F;
+      --table-header-bg: #F2F2F2;
+      --chip-bg: #ebebeb;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #313435;
+      --surface: #3B3F40;
+      --text: #999898;
+      --border: #525353;
+      --primary: #bc984f;
+      --field-bg: #414547;
+      --field-border: #5C6266;
+      --disabled-bg: #313435;
+      --disabled-border: #3B3F40;
+      --disabled-text: #999898;
+      --sidebar-bg: #414547;
+      --sidebar-text: #F1F2F3;
+      --sidebar-active-bg: #3B3F40;
+      --step-n-background: #C4984F;
+      --step-n-border: #C4984F;
+      --step-n-color:#3B3F40;
+      --table-header-bg: #414547;
+      --chip-bg: #313435;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; color: var(--text); background: var(--bg); }
+
+    .layout { display: flex; align-items: stretch; }
+    .layout > steps-sidebar { width: var(--sidebar-width); flex: 0 0 var(--sidebar-width); }
+    .layout > .content { flex: 1 1 auto; }
+    .content { max-width: 1200px; margin: 24px auto; padding: 0 24px 120px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 30px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 680px; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    label { font-size: 14px; line-height: 17px; font-weight: 500; color: var(--text); }
+    input[type="text"], textarea, select { appearance: none; border: 1px solid var(--field-border); border-radius: 10px; background: var(--field-bg); padding: 15px 20px; font-size: 14px; line-height: 17px; color: var(--text); min-height: 46px; }
+    input[disabled], textarea[disabled] { color: var(--disabled-text); background: var(--disabled-bg); border-color: var(--disabled-border); }
+    textarea { resize: vertical; }
+    select { background-image: linear-gradient(45deg, transparent 50%, #858585 50%), linear-gradient(135deg, #858585 50%, transparent 50%); background-position: calc(100% - 20px) 20px, calc(100% - 15px) 20px; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+
+    .step[hidden] { display: none !important; }
+
+    .table-like { display: grid; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .thead .tr, .tbody .tr { display: grid; grid-template-columns: 133px 231px 132px 1fr 114px; }
+    .w-133 { width: 133px; }
+    .w-231 { width: 231px; }
+    .w-132 { width: 132px; }
+    .w-459 { width: auto; }
+    .w-114 { width: 114px; }
+    .th { background: var(--table-header-bg); border-bottom: 1px solid var(--border); padding: 15px; color: #858585; font-size: 12px; line-height: 15px; }
+    .td { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 15px; font-size: 14px; line-height: 17px; color: var(--text); }
+    .thead .tr .th:first-child { border-top-left-radius: 10px; }
+    .thead .tr .th:last-child { border-top-right-radius: 10px; }
+    .tbody .tr:last-child .td:first-child { border-bottom-left-radius: 10px; }
+    .tbody .tr:last-child .td:last-child { border-bottom-right-radius: 10px; }
+
+    .link-btn { background: none; border: none; color: var(--text); cursor: pointer; text-decoration: underline; padding: 0; }
+    .action-btn { background: transparent; border: 0; color: var(--text); cursor: pointer; display: inline-flex; align-items: center; gap: 10px; padding: 0; }
+
+    .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 680px; }
+    .btn.pill { border-radius: 55px; height: 46px; max-height: 46px; display: inline-flex; align-items: center; justify-content: center; padding: 13px 20px; }
+    .btn-outline { background: #FFFFFF; color: var(--primary); border: 1px solid var(--primary); }
+
+    .app-footer { position: fixed; left: var(--sidebar-width); right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--border); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .btn { appearance: none; border-radius: 39px; padding: 10px 29px; font-size: 14px; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--text); }
+    .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-700); border-color: var(--primary-700); }
+    .btn-secondary:hover { background: #f9fafb; }
+
+    .multiselect { position: relative; border: 1px solid var(--field-border); border-radius: 10px; background: var(--field-bg); min-height: 46px; display: flex; align-items: center; justify-content: center; padding: 8px 20px; gap: 20px; padding-right: 48px; }
+    .multiselect-values { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 auto; justify-content: center; width: 100%; }
+    .multiselect .chip { background: var(--chip-bg); border-radius: 30px; height: 30px; padding: 3px 15px; display: inline-flex; align-items: center; gap: 10px; border: 0; }
+    .chip .chip-remove { width: 20px; height: 20px; display: inline-block; position: relative; border: 1.9px solid; border-radius: 6px; }
+    .chip .chip-remove:before, .chip .chip-remove:after { content: ""; position: absolute; left: 8px; top: 4.6px; border-radius: 5px; width: 1.5px; height: 8px; background: var(--text); }
+    .chip .chip-remove:before { transform: rotate(45deg); }
+    .chip .chip-remove:after { transform: rotate(-45deg); }
+    .multiselect-toggle { width: 24px; height: 24px; border: none; background: transparent; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); }
+    .multiselect-toggle:after { content: ""; position: absolute; right: 0; top: 9px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid #858585; }
+    .multiselect-menu { position: absolute; left: 0; right: 0; top: calc(100% + 6px); background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 8px; display: none; z-index: 20; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+    .multiselect.open .multiselect-menu { display: block; }
+    .multiselect-option { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+    .multiselect-option[aria-selected="true"] { background: #fff7ed; outline: 1px solid var(--border); }
+    .multiselect-option:hover { background: #f9fafb; }
+
+    .attachments .attachments-card { position: relative; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); padding: 30px; }
+    .attachments .attachments-head { text-align: center; display: grid; gap: 6px; margin-bottom: 15px; }
+    .attachments .attachments-head .title { font-size: 14px; line-height: 17px; font-weight: 500; color: var(--text); }
+    .attachments .attachments-head .subtitle { font-size: 12px; line-height: 15px; color: #b8b8b8; }
+    .dropzone { border: 1px dashed var(--border); background: #fbfbfb; border-radius: 10px; padding: 21px; display: grid; place-items: center; cursor: pointer; }
+    .dropzone:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .dropzone-inner { display: grid; gap: 10px; justify-items: center; text-align: center; color: var(--text); }
+    .cloud-icon { width: 32px; height: 32px; background: var(--text); mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M19 18H6a4 4 0 0 1-.8-7.92A6 6 0 0 1 17.92 7a5 5 0 0 1 1.08 9.89V18Zm-7-7v6h2v-6h3l-4-4l-4 4h3Z"/></svg>') center / contain no-repeat; }
+    .file-list { display: grid; gap: 10px; margin-top: 20px; }
+    .file-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 15px 30px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+    .file-item .meta { display: grid; gap: 4px; }
+    .file-item .name { font-size: 16px; line-height: 20px; font-weight: 500; color: var(--text); }
+    .file-item .size { font-size: 14px; line-height: 17px; color: #858585; }
+    .file-actions { display: flex; gap: 20px; }
+    .file-actions .icon { width: 20px; height: 20px; background: var(--primary); mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M14 2H6a2 2 0 0 0-2 2v16l4-4h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>') center / contain no-repeat; }
+    .file-actions .icon.delete { background: var(--primary); mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zm3.46-8.12l1.41-1.41L12 10.59l1.12-1.12l1.41 1.41L13.41 12l1.12 1.12l-1.41 1.41L12 13.41l-1.12 1.12l-1.41-1.41L10.59 12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg>') center / contain no-repeat; }
+
+    @media (max-width: 1200px) { .content { padding-right: 16px; padding-left: 16px; } }
+    @media (max-width: 960px) {
+      .layout { display: block; }
+      .form-grid { max-width: 100%; }
+      .app-footer { left: 0; }
+      .thead .tr, .tbody .tr { grid-template-columns: 1fr; }
+      .th, .td { width: auto; }
+      .cta-row { grid-template-columns: 1fr; }
+      .table-like { border: none; }
+      .table-like .thead { display: none; }
+      .tbody .tr { grid-template-columns: 1fr; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+      .tbody .tr .td { border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 10px; }
+      .tbody .tr .td:last-child { border-bottom: none; }
+      .tbody .tr .td::before { content: attr(data-label); color: #858585; font-size: 12px; line-height: 15px; padding-right: 8px; }
+      .tbody .tr .td:nth-child(1)::before { content: "Date"; }
+      .tbody .tr .td:nth-child(2)::before { content: "Challenge"; }
+      .tbody .tr .td:nth-child(3)::before { content: "DevCo"; }
+      .tbody .tr .td:nth-child(4)::before { content: "Description"; }
+      .tbody .tr .td:nth-child(5)::before { content: "Actions"; }
+    }
+
+    /* Mode switching */
+    #app[data-mode="tech"] .pilot-only { display: none !important; }
+    #app[data-mode="pilot"] .tech-only { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="app" data-mode="tech">
+    <pif-header id="header" title="Propose Technology"></pif-header>
+    <div class="layout">
+      <steps-sidebar id="stepsNav" active-step="1"></steps-sidebar>
+      <main class="content">
+        <!-- Tech flow -->
+        <section class="card step tech-only" data-step="1">
+          <form id="tech-form" class="form-grid">
+            <div class="field">
+              <label>Stage</label>
+              <input type="text" value="Screening" disabled>
+            </div>
+            <div class="field">
+              <label>Technology ID</label>
+              <input type="text" value="78232223" disabled>
+            </div>
+            <div class="field full">
+              <label>Technology title</label>
+              <input type="text" placeholder="Enter title">
+            </div>
+            <div class="field full">
+              <label>Technology description</label>
+              <textarea rows="4" placeholder="Describe the technology"></textarea>
+            </div>
+            <div class="field full">
+              <label>Technology provider</label>
+              <select>
+                <option>XYZ Smart Transit Solutions</option>
+                <option>ABC Mobility</option>
+                <option>UrbanTech</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Owner</label>
+              <input type="text" value="Ibrahim Al-Asiri" disabled>
+            </div>
+            <div class="field full">
+              <label>Technology type</label>
+              <div class="multiselect" id="tech-type" data-name="technologyTypes[]" data-options='["AI & ML","Big Data & Analytics","IoT","Robotics","Cloud"]'>
+                <div class="multiselect-values" aria-live="polite"></div>
+                <button type="button" class="multiselect-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Open options"></button>
+                <div class="multiselect-menu" role="listbox" aria-multiselectable="true"></div>
+              </div>
+            </div>
+            <div class="field full">
+              <label>Associated sector</label>
+              <input type="text" value="Mobility" disabled>
+            </div>
+            <div class="field full">
+              <label>Technology source</label>
+              <div class="checkboxes">
+                <label><input type="checkbox" checked> Desktop Research</label>
+                <label><input type="checkbox"> VC</label>
+                <label><input type="checkbox" checked> Expos and conferences</label>
+                <label><input type="checkbox" checked> Innovation Hub</label>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section class="card step tech-only" data-step="2" hidden>
+          <div class="block">
+            <div class="field full">
+              <label>Potential DevCos</label>
+              <div class="multiselect" id="devcos" data-name="devcos[]" data-options='["NEOM","Saudi Railway Company","ARDARA","Red Sea Global"]' data-selected="NEOM|Saudi Railway Company">
+                <div class="multiselect-values" aria-live="polite"></div>
+                <button type="button" class="multiselect-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Open options"></button>
+                <div class="multiselect-menu" role="listbox" aria-multiselectable="true"></div>
+              </div>
+            </div>
+            <div class="field full">
+              <label>Relevant to a business challenge</label>
+              <div class="radios">
+                <label class="radio"><input type="radio" name="relevant" value="yes" checked> Yes</label>
+                <label class="radio"><input type="radio" name="relevant" value="no"> No</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="block with-divider">
+            <div class="table-like" role="table" aria-label="Challenges table">
+              <div class="thead" role="rowgroup">
+                <div class="tr" role="row">
+                  <div class="th w-133" role="columnheader">Date</div>
+                  <div class="th w-231" role="columnheader">Challenge Name</div>
+                  <div class="th w-132" role="columnheader">DevCo Name</div>
+                  <div class="th w-459" role="columnheader">Description</div>
+                  <div class="th w-114" role="columnheader">Actions</div>
+                </div>
+              </div>
+              <div class="tbody" role="rowgroup">
+                <div class="tr" role="row">
+                  <div class="td w-133" role="cell">1st Jan 2026</div>
+                  <div class="td w-231" role="cell">Traffic Congestion</div>
+                  <div class="td w-132" role="cell">NEOM</div>
+                  <div class="td w-459" role="cell">Rapid urban growth has led to increased traffic congestion, causing delays and inefficiencies in public transit systems.</div>
+                  <div class="td w-114" role="cell"><button type="button" class="action-btn"><span>Delete</span></button></div>
+                </div>
+                <div class="tr" role="row">
+                  <div class="td w-133" role="cell">1st Jan 2026</div>
+                  <div class="td w-231" role="cell">Lack of Transport Integration</div>
+                  <div class="td w-132" role="cell">ARDARA</div>
+                  <div class="td w-459" role="cell">Disjointed transportation modes make it challenging for commuters to transition seamlessly between buses, trains, and other transit options.</div>
+                  <div class="td w-114" role="cell"><button type="button" class="action-btn"><span>Delete</span></button></div>
+                </div>
+                <div class="tr" role="row">
+                  <div class="td w-133" role="cell">1st Jan 2026</div>
+                  <div class="td w-231" role="cell">Limited Data for Planning</div>
+                  <div class="td w-132" role="cell">Red Sea Global</div>
+                  <div class="td w-459" role="cell">Urban planners lack real-time transit data to make informed decisions on improving infrastructure and operations.</div>
+                  <div class="td w-114" role="cell"><button type="button" class="action-btn"><span>Delete</span></button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card step tech-only attachments" data-step="3" hidden>
+          <div class="block">
+            <div class="field full">
+              <label>Attachments</label>
+              <div class="attachments-card">
+                <div class="attachments-head">
+                  <div class="title">Upload Images</div>
+                  <div class="subtitle">PNG, JPG and GIF files are allowed</div>
+                </div>
+                <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Drag and drop or browse to choose a file">
+                  <div class="dropzone-inner">
+                    <div class="cloud-icon" aria-hidden="true"></div>
+                    <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose a file</div>
+                  </div>
+                  <input id="file-input" type="file" accept="image/png,image/jpeg,image/gif" multiple hidden>
+                </div>
+              </div>
+            </div>
+            <div class="file-list" id="file-list" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <!-- Pilot flow -->
+        <section class="card step pilot-only" data-step="1">
+          <form id="pilot-form" class="form-grid form-620">
+            <div class="field full">
+              <label>Pilot name</label>
+              <input type="text" placeholder="Riyadh's Public Transit System" required>
+              <div class="note">The name of the pilot cannot be modified during the lifecycle.</div>
+            </div>
+            <div class="field full">
+              <label>Pilot description</label>
+              <textarea rows="5" placeholder="Describe the pilot" required></textarea>
+              <div class="note">Provide a brief overview of the pilot.</div>
+            </div>
+            <div class="field full">
+              <label>Objective</label>
+              <textarea rows="4" placeholder="What is the goal?" required></textarea>
+            </div>
+            <div class="field full">
+              <label>Location</label>
+              <select>
+                <option>Riyadh</option>
+                <option>Jeddah</option>
+                <option>NEOM</option>
+              </select>
+            </div>
+            <div class="row-2">
+              <div class="field">
+                <label>Pilot budget currency</label>
+                <select>
+                  <option>SAR (Saudi Riyals)</option>
+                  <option>USD (US Dollar)</option>
+                  <option>EUR (Euro)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Pilot estimated budget</label>
+                <input type="text" placeholder="245 M">
+              </div>
+            </div>
+            <div class="field full">
+              <label>Funded by</label>
+              <div class="checkboxes">
+                <label><input type="checkbox" checked> Innovation Hub</label>
+                <label><input type="checkbox"> DevCo</label>
+                <label><input type="checkbox"> Sector budget</label>
+                <label><input type="checkbox"> Other</label>
+              </div>
+            </div>
+            <div class="field full">
+              <label>Technology Solution</label>
+              <select>
+                <option>Smart Mobility Platform with Real-Time Data Integration</option>
+                <option>Autonomous Shuttle Service</option>
+                <option>Unified Ticketing System</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Associated sector</label>
+              <input type="text" value="Mobility" disabled>
+            </div>
+            <div class="field full">
+              <label>Technology solution provider</label>
+              <select>
+                <option>XYZ Smart Transit Solutions</option>
+                <option>UrbanTech</option>
+                <option>ABC Mobility</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>DevCo leading this pilot</label>
+              <select>
+                <option>Saudi Railway Company</option>
+                <option>NEOM</option>
+                <option>Red Sea Global</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Pilot Lead</label>
+              <select>
+                <option>Ahmed Al-Fahad</option>
+                <option>Ibrahim Al-Asiri</option>
+                <option>Fatimah Al-Harbi</option>
+              </select>
+              <div class="note">The name of the pilot cannot be modified during the lifecycle.</div>
+            </div>
+            <div class="field full">
+              <label>Pilot Team</label>
+              <select>
+                <option>Urban Mobility Team</option>
+                <option>Data & Analytics Team</option>
+                <option>Operations Team</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Attachments</label>
+              <div class="attachments-card">
+                <div class="attachments-head">
+                  <div class="title">Upload Images</div>
+                  <div class="subtitle">PNG, JPG and GIF files are allowed</div>
+                </div>
+                <div class="dropzone" id="pt-dropzone" role="button" tabindex="0">
+                  <div class="dropzone-inner">
+                    <div class="cloud-icon" aria-hidden="true"></div>
+                    <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose a file</div>
+                  </div>
+                  <input id="pt-file-input" type="file" multiple hidden>
+                </div>
+              </div>
+            </div>
+            <div class="file-list" id="pt-file-list" aria-live="polite"></div>
+          </form>
+        </section>
+
+        <section class="card step pilot-only" data-step="2" hidden>
+          <div class="block">
+            <div class="field full">
+              <label>Attachments</label>
+              <div class="attachments-card">
+                <div class="attachments-head">
+                  <div class="title">Upload Images</div>
+                  <div class="subtitle">PNG, JPG and GIF files are allowed</div>
+                </div>
+                <div class="dropzone" id="dropzone" role="button" tabindex="0">
+                  <div class="dropzone-inner">
+                    <div class="cloud-icon" aria-hidden="true"></div>
+                    <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose a file</div>
+                  </div>
+                  <input id="file-input" type="file" multiple hidden>
+                </div>
+              </div>
+            </div>
+            <div class="file-list" id="file-list" aria-live="polite"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <div class="left-actions">
+          <button type="button" id="btn-back-tech" class="btn btn-secondary tech-only" hidden>Back</button>
+          <button type="button" id="btn-back-pilot" class="btn btn-secondary pilot-only" hidden>Back</button>
+          <button type="button" id="btn-cancel-tech" class="btn btn-secondary tech-only">Cancel</button>
+          <button type="button" id="btn-cancel-pilot" class="btn btn-secondary pilot-only">Cancel</button>
+        </div>
+        <div class="right-actions">
+          <button type="submit" form="tech-form" id="btn-save-tech" class="btn btn-primary tech-only">Save and Continue</button>
+          <button type="submit" form="pilot-form" id="btn-save-pilot" class="btn btn-primary pilot-only">Save and Continue</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="fragment.js"></script>
+</body>
+</html>
+
