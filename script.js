@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentStep = step;
     stepEls.forEach(el => el.hidden = el.dataset.step !== String(step));
     if (stepsNav) stepsNav.setAttribute('active-step', String(step));
+    if (btnBack) btnBack.hidden = step <= 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
