@@ -82,7 +82,7 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .block.with-divider { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
 /* Constrain fields to 680px as per spec */
-.step .field { max-width: 680px; }
+
 
 /* Radios */
 .radios { display: flex; gap: 20px; }
