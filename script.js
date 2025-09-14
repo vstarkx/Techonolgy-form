@@ -5,6 +5,9 @@
   const API_BASE = "/o/c/proposetechnologies";
   const LIST_TYPE_BASE = "/o/headless-admin-list-type/v1.0/list-type-definitions/by-external-reference-code";
   const CSRF_TOKEN = "AMUFtlQN"; // Updated CSRF token from working request
+  // Liferay Objects attachment upload action (provided)
+  // Note: p_auth will be replaced dynamically from Liferay.authToken when available
+  const OBJECT_ATTACHMENT_UPLOAD_URL = "https://automation.netways1.com/group/control_panel/manage?p_p_id=com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6&p_p_lifecycle=1&_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6_javax.portlet.action=/object_entries/upload_attachment&_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6_objectFieldId=51132&p_auth=wlDPhavo";
   
   // Picklist External Reference Codes
   const PICKLIST_CODES = {
@@ -935,20 +938,101 @@
 
     console.log('📤 Uploading file:', file.name, 'Size:', file.size);
 
+    // Always use FormData for binary upload
     const formData = new FormData();
     formData.append('file', file);
 
-    const headers = getAuthHeaders();
-    delete headers['Content-Type']; // Let browser set Content-Type for FormData
+    // Build the Liferay Objects attachment upload URL with dynamic p_auth and current origin
+    function buildAttachmentUploadUrl() {
+      try {
+        const url = new URL(OBJECT_ATTACHMENT_UPLOAD_URL, location.origin);
+        // Force current origin (protocol/host) in case the provided URL points to a different env
+        url.protocol = location.protocol;
+        url.host = location.host;
+        const token = (typeof Liferay !== 'undefined' && Liferay.authToken) ? Liferay.authToken : CSRF_TOKEN;
+        if (token) {
+          url.searchParams.set('p_auth', token);
+        }
+        return url.toString();
+      } catch (e) {
+        return OBJECT_ATTACHMENT_UPLOAD_URL;
+      }
+    }
 
-    const response = await makeApiRequest('/o/headless-delivery/v1.0/documents', {
-      method: 'POST',
-      headers: headers,
-      body: formData
-    });
+    // Try preferred Objects attachment action first
+    const attachmentUrl = buildAttachmentUploadUrl();
+    try {
+      const res = await fetch(attachmentUrl, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      });
 
-    console.log('✅ File uploaded successfully:', response);
-    return response;
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Objects upload failed (${res.status}): ${text}`);
+      }
+
+      // Some Liferay actions return JSON; others may return text. Try JSON first.
+      let data;
+      try {
+        data = await res.json();
+      } catch (_) {
+        const text = await res.text();
+        const match = text.match(/"fileEntryId"\s*:\s*(\d+)/);
+        data = match ? { fileEntryId: Number(match[1]) } : { raw: text };
+      }
+
+      const normalized = {
+        id: data?.fileEntryId || data?.fileEntry?.fileEntryId || data?.id,
+        raw: data
+      };
+
+      if (!normalized.id) {
+        console.warn('Attachment action returned unexpected payload, falling back to headless upload', data);
+        throw new Error('Unexpected attachment upload response');
+      }
+
+      console.log('✅ File uploaded via Objects action:', normalized);
+      return normalized;
+    } catch (err) {
+      console.warn('⚠️ Objects attachment upload failed, falling back to Headless Delivery:', err.message);
+
+      // Fallback: upload to Documents via Headless Delivery
+      try {
+        const headers = getAuthHeaders();
+        // Ensure we do NOT set Content-Type so browser sets multipart boundary
+        delete headers['Content-Type'];
+
+        const res2 = await fetch('/o/headless-delivery/v1.0/documents', {
+          method: 'POST',
+          credentials: 'include',
+          headers,
+          body: formData
+        });
+
+        if (!res2.ok) {
+          const text = await res2.text();
+          throw new Error(`Headless upload failed (${res2.status}): ${text}`);
+        }
+
+        const data2 = await res2.json();
+        const normalized2 = {
+          id: data2?.id || data2?.fileEntryId,
+          raw: data2
+        };
+
+        if (!normalized2.id) {
+          throw new Error('Headless upload returned no ID');
+        }
+
+        console.log('✅ File uploaded via Headless Delivery:', normalized2);
+        return normalized2;
+      } catch (fallbackErr) {
+        console.error('❌ File upload failed in both methods:', fallbackErr);
+        throw fallbackErr;
+      }
+    }
   }
 
   // Delete file from Liferay Documents API
