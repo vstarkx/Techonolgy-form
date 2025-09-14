@@ -5,6 +5,29 @@
   const API_BASE = "/o/c/proposetechnologies";
   const LIST_TYPE_BASE = "/o/headless-admin-list-type/v1.0/list-type-definitions/by-external-reference-code";
   const CSRF_TOKEN = "AMUFtlQN"; // Updated CSRF token from working request
+  // Liferay Objects attachment upload action (provided)
+  // Note: p_auth will be replaced dynamically from Liferay.authToken when available
+  const OBJECT_ATTACHMENT_UPLOAD_URL = "https://automation.netways1.com/group/control_panel/manage?p_p_id=com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6&p_p_lifecycle=1&_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6_javax.portlet.action=/object_entries/upload_attachment&_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6_objectFieldId=51132&p_auth=wlDPhavo";
+  
+  // CSRF token helpers (added)
+  async function getCsrfToken() {
+    if (window.Liferay?.authToken) return Liferay.authToken;
+    try {
+      const r = await fetch('/o/csrf-token', { credentials: 'include' });
+      if (r.ok) return (await r.json())?.token || '';
+    } catch (_) {}
+    return '';
+  }
+
+  async function defaultHeaders() {
+    const t = await getCsrfToken();
+    const h = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    };
+    if (t) h['x-csrf-token'] = t;
+    return h;
+  }
   
   // Picklist External Reference Codes
   const PICKLIST_CODES = {
@@ -448,42 +471,17 @@
     return payload;
   }
 
-  // Get authentication headers dynamically
-  function getAuthHeaders() {
-    const headers = {
-      'accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
-
-    // Try to get CSRF token dynamically from Liferay
-    if (typeof Liferay !== 'undefined' && Liferay.authToken) {
-      headers['x-csrf-token'] = Liferay.authToken;
-    } else {
-      // Fallback to hardcoded token
-      headers['x-csrf-token'] = CSRF_TOKEN;
-    }
-
-    // Add authentication cookie if available
-    if (typeof Liferay !== 'undefined' && Liferay.ThemeDisplay) {
-      // Liferay automatically includes session cookies
-      headers['Authorization'] = `Bearer ${Liferay.authToken || CSRF_TOKEN}`;
-    }
-
-    return headers;
-  }
+  // Get authentication headers dynamically (deprecated in favor of defaultHeaders)
 
   // API Functions
   async function makeApiRequest(url, options = {}) {
-    const defaultHeaders = getAuthHeaders();
+    const baseHeaders = await defaultHeaders();
 
     try {
       const response = await fetch(url, {
         ...options,
         credentials: 'include', // Include cookies for authentication
-        headers: {
-          ...defaultHeaders,
-          ...options.headers
-        }
+        headers: { ...baseHeaders, ...(options.headers || {}) }
       });
 
       if (!response.ok) {
@@ -935,20 +933,110 @@
 
     console.log('📤 Uploading file:', file.name, 'Size:', file.size);
 
+    // Always use FormData for binary upload
     const formData = new FormData();
     formData.append('file', file);
 
-    const headers = getAuthHeaders();
-    delete headers['Content-Type']; // Let browser set Content-Type for FormData
+    // Build the Liferay Objects attachment upload URL with dynamic p_auth and current origin
+    function buildAttachmentUploadUrl() {
+      try {
+        const url = new URL(OBJECT_ATTACHMENT_UPLOAD_URL, location.origin);
+        // Force current origin (protocol/host) in case the provided URL points to a different env
+        url.protocol = location.protocol;
+        url.host = location.host;
+        // Prefer dynamic CSRF from getCsrfToken when possible, else fallback to Liferay.authToken/CSRF_TOKEN
+        // Note: this function remains sync; token is appended later before fetch
+        return url.toString();
+      } catch (e) {
+        return OBJECT_ATTACHMENT_UPLOAD_URL;
+      }
+    }
 
-    const response = await makeApiRequest('/o/headless-delivery/v1.0/documents', {
-      method: 'POST',
-      headers: headers,
-      body: formData
-    });
+    // Try preferred Objects attachment action first
+    const csrfToken = await getCsrfToken();
+    const baseUrl = buildAttachmentUploadUrl();
+    const attachmentUrl = (() => {
+      try {
+        const u = new URL(baseUrl, location.origin);
+        if (csrfToken) u.searchParams.set('p_auth', csrfToken);
+        return u.toString();
+      } catch (_) { return baseUrl; }
+    })();
+    try {
+      const objHeaders = await defaultHeaders();
+      delete objHeaders['Content-Type'];
+      const res = await fetch(attachmentUrl, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+        headers: objHeaders
+      });
 
-    console.log('✅ File uploaded successfully:', response);
-    return response;
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Objects upload failed (${res.status}): ${text}`);
+      }
+
+      // Some Liferay actions return JSON; others may return text. Try JSON first.
+      let data;
+      try {
+        data = await res.json();
+      } catch (_) {
+        const text = await res.text();
+        const match = text.match(/"fileEntryId"\s*:\s*(\d+)/);
+        data = match ? { fileEntryId: Number(match[1]) } : { raw: text };
+      }
+
+      const normalized = {
+        id: data?.fileEntryId || data?.fileEntry?.fileEntryId || data?.id,
+        raw: data
+      };
+
+      if (!normalized.id) {
+        console.warn('Attachment action returned unexpected payload, falling back to headless upload', data);
+        throw new Error('Unexpected attachment upload response');
+      }
+
+      console.log('✅ File uploaded via Objects action:', normalized);
+      return normalized;
+    } catch (err) {
+      console.warn('⚠️ Objects attachment upload failed, falling back to Headless Delivery:', err.message);
+
+      // Fallback: upload to Documents via Headless Delivery
+      try {
+        const headers = await defaultHeaders();
+        // Ensure we do NOT set Content-Type so browser sets multipart boundary
+        delete headers['Content-Type'];
+
+        const res2 = await fetch('/o/headless-delivery/v1.0/documents', {
+          method: 'POST',
+          credentials: 'include',
+          headers,
+          body: formData
+        });
+
+        if (!res2.ok) {
+          const text = await res2.text();
+          throw new Error(`Headless upload failed (${res2.status}): ${text}`);
+        }
+
+        const data2 = await res2.json();
+        const normalized2 = {
+          id: data2?.id || data2?.fileEntryId,
+          raw: data2
+        };
+
+        if (!normalized2.id) {
+          throw new Error('Headless upload returned no ID');
+        }
+
+        console.log('✅ File uploaded via Headless Delivery:', normalized2);
+        return normalized2;
+      } catch (fallbackErr) {
+        console.error('❌ File upload failed in both methods:', fallbackErr);
+        throw fallbackErr;
+      }
+    }
   }
 
   // Delete file from Liferay Documents API
@@ -960,8 +1048,7 @@
     console.log('🗑️ Deleting file:', fileId);
 
     const response = await makeApiRequest(`/o/headless-delivery/v1.0/documents/${fileId}`, {
-      method: 'DELETE',
-      headers: getAuthHeaders()
+      method: 'DELETE'
     });
 
     console.log('✅ File deleted successfully:', response);
@@ -1299,7 +1386,7 @@
     }
     
     console.log('- Hardcoded CSRF Token:', CSRF_TOKEN);
-    console.log('- Current headers:', getAuthHeaders());
+    defaultHeaders().then(h => console.log('- Current headers:', h));
   }
 
   // Test API connectivity
