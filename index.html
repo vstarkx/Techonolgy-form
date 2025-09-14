@@ -1,199 +1,545 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Propose Technology</title>
-  <script>
-    try {
-      var t = localStorage.getItem('theme') || 'dark';
-      document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
-  </script>
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="components/header/header.js"></script>
-  <script type="module" src="components/steps/steps.js"></script>
+ 
 </head>
 <body>
-  <pif-header title="Propose Technology"></pif-header>
+  <div class="technology-form-fragment">
+    <!-- Theme detection script for Liferay -->
+    <script>
+      (function() {
+        try {
+          var theme = 'dark'; // Default theme
+          // Try to detect Liferay theme if available
+          if (typeof Liferay !== 'undefined' && Liferay.ThemeDisplay) {
+            var liferayTheme = Liferay.ThemeDisplay.getColorSchemeId();
+            theme = (liferayTheme && liferayTheme.includes('dark')) ? 'dark' : 'light';
+          } else {
+            theme = localStorage.getItem('theme') || 'dark';
+          }
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
 
-  <div class="layout">
-    <steps-sidebar id="stepsNav" active-step="1"></steps-sidebar>
-
-    <main class="content">
-      <section class="card step" data-step="1">
-        <form id="tech-form" class="form-grid">
-          <div class="field">
-            <label>Stage</label>
-            <input type="text" value="Screening" disabled>
-          </div>
-          <div class="field">
-            <label>Technology ID</label>
-            <input type="text" value="78232223" disabled>
-          </div>
-          <div class="field full">
-            <label>Technology title</label>
-            <input type="text" placeholder="Enter title">
-          </div>
-          <div class="field full">
-            <label>Technology description</label>
-            <textarea rows="4" placeholder="Describe the technology"></textarea>
-          </div>
-          <div class="field full">
-            <label>Technology provider</label>
-            <select>
-              <option>XYZ Smart Transit Solutions</option>
-              <option>ABC Mobility</option>
-              <option>UrbanTech</option>
-            </select>
-          </div>
-          <div class="field full">
-            <label>Owner</label>
-            <input type="text" value="Ibrahim Al-Asiri" disabled>
-          </div>
-          <div class="field full">
-            <label>Technology type</label>
-            <div class="multiselect" id="tech-type" data-name="technologyTypes[]" data-options='["AI & ML","Big Data & Analytics","IoT","Robotics","Cloud"]'>
-              <div class="multiselect-values" aria-live="polite"></div>
-              <button type="button" class="multiselect-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Open options"></button>
-              <div class="multiselect-menu" role="listbox" aria-multiselectable="true"></div>
-            </div>
-          </div>
-          <div class="field full">
-            <label>Associated sector</label>
-            <input type="text" value="Mobility" disabled>
-          </div>
-          <div class="field full">
-            <label>Technology source</label>
-            <div class="checkboxes">
-              <label><input type="checkbox" checked> Desktop Research</label>
-              <label><input type="checkbox"> VC</label>
-              <label><input type="checkbox" checked> Expos and conferences</label>
-              <label><input type="checkbox" checked> Innovation Hub</label>
-            </div>
-          </div>
-        </form>
-      </section>
-
-      <section class="card step" data-step="2" hidden>
-<!--         <div class="info-banner" role="note">
-          <span class="info-icon" aria-hidden="true"></span>
-          <span>Proposed technologies will be parked under Screening. They will be reviewed by the Sector Lead for final approval from the Innovation Leadership.</span>
-        </div> -->
-
-        <div class="block">
-          <div class="field full">
-            <label>Potential DevCos</label>
-            <div class="multiselect" id="devcos" data-name="devcos[]" data-options='["NEOM","Saudi Railway Company","ARDARA","Red Sea Global"]' data-selected="NEOM|Saudi Railway Company">
-              <div class="multiselect-values" aria-live="polite"></div>
-              <button type="button" class="multiselect-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Open options"></button>
-              <div class="multiselect-menu" role="listbox" aria-multiselectable="true"></div>
-            </div>
-          </div>
-
-          <div class="field full">
-            <label>Relevant to a business challenge</label>
-            <div class="radios">
-              <label class="radio"><input type="radio" name="relevant" value="yes" checked> Yes</label>
-              <label class="radio"><input type="radio" name="relevant" value="no"> No</label>
-            </div>
-          </div>
+    <!-- Header -->
+    <div class="app-header">
+      <div class="header-inner">
+        <div class="brand">
+          <span class="app-title">Propose Technology</span>
         </div>
+      </div>
+    </div>
 
-        <div class="block with-divider">
-          <div class="table-like" role="table" aria-label="Challenges table">
-            <div class="thead" role="rowgroup">
-              <div class="tr" role="row">
-                <div class="th w-133" role="columnheader">Date</div>
-                <div class="th w-231" role="columnheader">Challenge Name</div>
-                <div class="th w-132" role="columnheader">DevCo Name</div>
-                <div class="th w-459" role="columnheader">Description</div>
-                <div class="th w-114" role="columnheader">Actions</div>
-              </div>
-            </div>
-            <div class="tbody" role="rowgroup">
-              <div class="tr" role="row">
-                <div class="td w-133" role="cell">1st Jan 2026</div>
-                <div class="td w-231" role="cell">Traffic Congestion</div>
-                <div class="td w-132" role="cell">NEOM</div>
-                <div class="td w-459" role="cell">Rapid urban growth has led to increased traffic congestion, causing delays and inefficiencies in public transit systems.</div>
-                <div class="td w-114" role="cell"><button type="button" class="action-btn"><span  aria-hidden="true"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M6.23503 2.99935H8.73503C8.73503 2.30899 8.17538 1.74935 7.48503 1.74935C6.79467 1.74935 6.23503 2.30899 6.23503 2.99935ZM5.40169 2.99935C5.40169 1.84876 6.33443 0.916016 7.48503 0.916016C8.63562 0.916016 9.56836 1.84876 9.56836 2.99935H13.735C13.9651 2.99935 14.1517 3.1859 14.1517 3.41602C14.1517 3.64613 13.9651 3.83268 13.735 3.83268H12.8564L11.8618 12.4526C11.7162 13.7141 10.6481 14.666 9.37825 14.666H5.5918C4.32195 14.666 3.25383 13.714 3.10827 12.4526L2.11367 3.83268H1.23503C1.00491 3.83268 0.818359 3.64613 0.818359 3.41602C0.818359 3.1859 1.00491 2.99935 1.23503 2.99935H5.40169ZM3.93612 12.3571C4.03315 13.198 4.74523 13.8327 5.5918 13.8327H9.37825C10.2248 13.8327 10.9369 13.198 11.0339 12.3571L12.0175 3.83268H2.95253L3.93612 12.3571ZM6.23503 5.91602C6.46514 5.91602 6.65169 6.10256 6.65169 6.33268V11.3327C6.65169 11.5628 6.46514 11.7493 6.23503 11.7493C6.00491 11.7493 5.81836 11.5628 5.81836 11.3327V6.33268C5.81836 6.10256 6.00491 5.91602 6.23503 5.91602ZM9.15169 6.33268C9.15169 6.10256 8.96514 5.91602 8.73503 5.91602C8.50491 5.91602 8.31836 6.10256 8.31836 6.33268V11.3327C8.31836 11.5628 8.50491 11.7493 8.73503 11.7493C8.96514 11.7493 9.15169 11.5628 9.15169 11.3327V6.33268Z" fill="#F34E4E"/> </svg></span></button></div>
-              </div>
-              <div class="tr" role="row">
-                <div class="td w-133" role="cell">1st Jan 2026</div>
-                <div class="td w-231" role="cell">Lack of Transport Integration</div>
-                <div class="td w-132" role="cell">ARDARA</div>
-                <div class="td w-459" role="cell">Disjointed transportation modes make it challenging for commuters to transition seamlessly between buses, trains, and other transit options.</div>
-                <div class="td w-114" role="cell"><button type="button" class="action-btn"><span  aria-hidden="true"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M6.23503 2.99935H8.73503C8.73503 2.30899 8.17538 1.74935 7.48503 1.74935C6.79467 1.74935 6.23503 2.30899 6.23503 2.99935ZM5.40169 2.99935C5.40169 1.84876 6.33443 0.916016 7.48503 0.916016C8.63562 0.916016 9.56836 1.84876 9.56836 2.99935H13.735C13.9651 2.99935 14.1517 3.1859 14.1517 3.41602C14.1517 3.64613 13.9651 3.83268 13.735 3.83268H12.8564L11.8618 12.4526C11.7162 13.7141 10.6481 14.666 9.37825 14.666H5.5918C4.32195 14.666 3.25383 13.714 3.10827 12.4526L2.11367 3.83268H1.23503C1.00491 3.83268 0.818359 3.64613 0.818359 3.41602C0.818359 3.1859 1.00491 2.99935 1.23503 2.99935H5.40169ZM3.93612 12.3571C4.03315 13.198 4.74523 13.8327 5.5918 13.8327H9.37825C10.2248 13.8327 10.9369 13.198 11.0339 12.3571L12.0175 3.83268H2.95253L3.93612 12.3571ZM6.23503 5.91602C6.46514 5.91602 6.65169 6.10256 6.65169 6.33268V11.3327C6.65169 11.5628 6.46514 11.7493 6.23503 11.7493C6.00491 11.7493 5.81836 11.5628 5.81836 11.3327V6.33268C5.81836 6.10256 6.00491 5.91602 6.23503 5.91602ZM9.15169 6.33268C9.15169 6.10256 8.96514 5.91602 8.73503 5.91602C8.50491 5.91602 8.31836 6.10256 8.31836 6.33268V11.3327C8.31836 11.5628 8.50491 11.7493 8.73503 11.7493C8.96514 11.7493 9.15169 11.5628 9.15169 11.3327V6.33268Z" fill="#F34E4E"/> </svg></span></button></div>
-              </div>
-              <div class="tr" role="row">
-                <div class="td w-133" role="cell">1st Jan 2026</div>
-                <div class="td w-231" role="cell">Limited Data for Planning</div>
-                <div class="td w-132" role="cell">Red Sea Global</div>
-                <div class="td w-459" role="cell">Urban planners lack real-time transit data to make informed decisions on improving infrastructure and operations.</div>
-                <div class="td w-114" role="cell"><button type="button" class="action-btn"><span  aria-hidden="true"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M6.23503 2.99935H8.73503C8.73503 2.30899 8.17538 1.74935 7.48503 1.74935C6.79467 1.74935 6.23503 2.30899 6.23503 2.99935ZM5.40169 2.99935C5.40169 1.84876 6.33443 0.916016 7.48503 0.916016C8.63562 0.916016 9.56836 1.84876 9.56836 2.99935H13.735C13.9651 2.99935 14.1517 3.1859 14.1517 3.41602C14.1517 3.64613 13.9651 3.83268 13.735 3.83268H12.8564L11.8618 12.4526C11.7162 13.7141 10.6481 14.666 9.37825 14.666H5.5918C4.32195 14.666 3.25383 13.714 3.10827 12.4526L2.11367 3.83268H1.23503C1.00491 3.83268 0.818359 3.64613 0.818359 3.41602C0.818359 3.1859 1.00491 2.99935 1.23503 2.99935H5.40169ZM3.93612 12.3571C4.03315 13.198 4.74523 13.8327 5.5918 13.8327H9.37825C10.2248 13.8327 10.9369 13.198 11.0339 12.3571L12.0175 3.83268H2.95253L3.93612 12.3571ZM6.23503 5.91602C6.46514 5.91602 6.65169 6.10256 6.65169 6.33268V11.3327C6.65169 11.5628 6.46514 11.7493 6.23503 11.7493C6.00491 11.7493 5.81836 11.5628 5.81836 11.3327V6.33268C5.81836 6.10256 6.00491 5.91602 6.23503 5.91602ZM9.15169 6.33268C9.15169 6.10256 8.96514 5.91602 8.73503 5.91602C8.50491 5.91602 8.31836 6.10256 8.31836 6.33268V11.3327C8.31836 11.5628 8.50491 11.7493 8.73503 11.7493C8.96514 11.7493 9.15169 11.5628 9.15169 11.3327V6.33268Z" fill="#F34E4E"/> </svg></span></button></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="cta-row">
-            <button type="button" class="btn btn-outline pill">Map Existing Challenges</button>
-            <button type="button" class="btn btn-primary pill">Add New Challenge</button>
-          </div>
+    <div class="layout">
+      <!-- Steps Sidebar -->
+      <aside class="steps-sidebar" role="navigation" aria-label="Steps">
+        <div class="sidebar-stack" id="stepsNav">
+          <!-- Steps will be dynamically generated -->
         </div>
+      </aside>
 
-        <div class="block">
-          <div class="field full">
-            <label>Select Added Value</label>
-            <div class="checkboxes">
-              <label><input type="checkbox"> Cost reduction</label>
-              <label><input type="checkbox" checked> Time saving</label>
-              <label><input type="checkbox"> Risk reduction</label>
-              <label><input type="checkbox"> Customer satisfaction</label>
+      <main class="content">
+        <!-- Step 1: Enter Information -->
+        <section class="card step" data-step="1">
+          <form id="tech-form" class="form-grid">
+            <div class="field">
+              <label>Stage</label>
+              <input type="text" value="Screening" disabled>
+            </div>
+            <div class="field">
+              <label>Technology ID</label>
+              <input type="text" value="78232223" disabled>
+            </div>
+            <div class="field full">
+              <label>Technology title</label>
+              <input type="text" placeholder="Enter title" name="title">
+            </div>
+            <div class="field full">
+              <label>Technology description</label>
+              <textarea rows="4" placeholder="Describe the technology" name="description"></textarea>
+            </div>
+            <div class="field full">
+              <label>Technology provider</label>
+              <select name="provider">
+                <option value="">Select option</option>
+                <option>XYZ Smart Transit Solutions</option>
+                <option>ABC Mobility</option>
+                <option>UrbanTech</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Owner</label>
+              <input type="text" value="Ibrahim Al-Asiri" disabled>
+            </div>
+            <div class="field full">
+              <label>Technology type</label>
+              <div class="multiselect" id="tech-type" data-name="technologyTypes[]" data-options='["AI & ML","Big Data & Analytics","IoT","Robotics","Cloud"]'>
+                <div class="multiselect-values" aria-live="polite"></div>
+                <button type="button" class="multiselect-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Open options"></button>
+                <div class="multiselect-menu" role="listbox" aria-multiselectable="true"></div>
+              </div>
+            </div>
+            <div class="field full">
+              <label>Associated sector</label>
+              <input type="text" value="Mobility" disabled>
+            </div>
+            <div class="field full">
+              <label>Technology source</label>
+              <div class="checkboxes">
+                <label><input type="checkbox" checked name="source[]" value="Desktop Research"> Desktop Research</label>
+                <label><input type="checkbox" name="source[]" value="VC"> VC</label>
+                <label><input type="checkbox" checked name="source[]" value="Expos and conferences"> Expos and conferences</label>
+                <label><input type="checkbox" checked name="source[]" value="Innovation Hub"> Innovation Hub</label>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- Step 2: Associated Challenges -->
+        <section class="card step" data-step="2" hidden>
+          <div class="block">
+            <div class="field full">
+              <label>Potential DevCos</label>
+              <div class="multiselect" id="devcos" data-name="devcos[]" data-options='["NEOM","Saudi Railway Company","ARDARA","Red Sea Global"]' data-selected="NEOM|Saudi Railway Company">
+                <div class="multiselect-values" aria-live="polite"></div>
+                <button type="button" class="multiselect-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Open options"></button>
+                <div class="multiselect-menu" role="listbox" aria-multiselectable="true"></div>
+              </div>
+            </div>
+
+            <div class="field full">
+              <label>Relevant to a business challenge</label>
+              <div class="radios">
+                <label class="radio"><input type="radio" name="relevant" value="yes" checked> Yes</label>
+                <label class="radio"><input type="radio" name="relevant" value="no"> No</label>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      <section class="card step" data-step="3" hidden>
-        <div class="block attachments">
-          <div class="field full">
-            <label>Attachments</label>
-            <div class="attachments-card">
-              <div class="attachments-head">
-                <div class="title">Upload Images</div>
-                <div class="subtitle">PNG, JPG and GIF files are allowed</div>
+          <!-- <div class="block with-divider">
+            <div class="table-like" role="table" aria-label="Challenges table">
+              <div class="thead" role="rowgroup">
+                <div class="tr" role="row">
+                  <div class="th w-133" role="columnheader">Date</div>
+                  <div class="th w-231" role="columnheader">Challenge Name</div>
+                  <div class="th w-132" role="columnheader">DevCo Name</div>
+                  <div class="th w-459" role="columnheader">Description</div>
+                  <div class="th w-114" role="columnheader">Actions</div>
+                </div>
               </div>
-              <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Drag and drop or browse to choose a file">
-                <div class="dropzone-inner">
-                  <div><svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div class="tbody" role="rowgroup">
+                <div class="tr" role="row">
+                  <div class="td w-133" role="cell">1st Jan 2026</div>
+                  <div class="td w-231" role="cell">Traffic Congestion</div>
+                  <div class="td w-132" role="cell">NEOM</div>
+                  <div class="td w-459" role="cell">Rapid urban growth has led to increased traffic congestion, causing delays and inefficiencies in public transit systems.</div>
+                  <div class="td w-114" role="cell"><button type="button" class="action-btn"><span aria-hidden="true"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M6.23503 2.99935H8.73503C8.73503 2.30899 8.17538 1.74935 7.48503 1.74935C6.79467 1.74935 6.23503 2.30899 6.23503 2.99935ZM5.40169 2.99935C5.40169 1.84876 6.33443 0.916016 7.48503 0.916016C8.63562 0.916016 9.56836 1.84876 9.56836 2.99935H13.735C13.9651 2.99935 14.1517 3.1859 14.1517 3.41602C14.1517 3.64613 13.9651 3.83268 13.735 3.83268H12.8564L11.8618 12.4526C11.7162 13.7141 10.6481 14.666 9.37825 14.666H5.5918C4.32195 14.666 3.25383 13.714 3.10827 12.4526L2.11367 3.83268H1.23503C1.00491 3.83268 0.818359 3.64613 0.818359 3.41602C0.818359 3.1859 1.00491 2.99935 1.23503 2.99935H5.40169ZM3.93612 12.3571C4.03315 13.198 4.74523 13.8327 5.5918 13.8327H9.37825C10.2248 13.8327 10.9369 13.198 11.0339 12.3571L12.0175 3.83268H2.95253L3.93612 12.3571ZM6.23503 5.91602C6.46514 5.91602 6.65169 6.10256 6.65169 6.33268V11.3327C6.65169 11.5628 6.46514 11.7493 6.23503 11.7493C6.00491 11.7493 5.81836 11.5628 5.81836 11.3327V6.33268C5.81836 6.10256 6.00491 5.91602 6.23503 5.91602ZM9.15169 6.33268C9.15169 6.10256 8.96514 5.91602 8.73503 5.91602C8.50491 5.91602 8.31836 6.10256 8.31836 6.33268V11.3327C8.31836 11.5628 8.50491 11.7493 8.73503 11.7493C8.96514 11.7493 9.15169 11.5628 9.15169 11.3327V6.33268Z" fill="#F34E4E"/> </svg></span></button></div>
+                </div>
+                <div class="tr" role="row">
+                  <div class="td w-133" role="cell">1st Jan 2026</div>
+                  <div class="td w-231" role="cell">Lack of Transport Integration</div>
+                  <div class="td w-132" role="cell">ARDARA</div>
+                  <div class="td w-459" role="cell">Disjointed transportation modes make it challenging for commuters to transition seamlessly between buses, trains, and other transit options.</div>
+                  <div class="td w-114" role="cell"><button type="button" class="action-btn"><span aria-hidden="true"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M6.23503 2.99935H8.73503C8.73503 2.30899 8.17538 1.74935 7.48503 1.74935C6.79467 1.74935 6.23503 2.30899 6.23503 2.99935ZM5.40169 2.99935C5.40169 1.84876 6.33443 0.916016 7.48503 0.916016C8.63562 0.916016 9.56836 1.84876 9.56836 2.99935H13.735C13.9651 2.99935 14.1517 3.1859 14.1517 3.41602C14.1517 3.64613 13.9651 3.83268 13.735 3.83268H12.8564L11.8618 12.4526C11.7162 13.7141 10.6481 14.666 9.37825 14.666H5.5918C4.32195 14.666 3.25383 13.714 3.10827 12.4526L2.11367 3.83268H1.23503C1.00491 3.83268 0.818359 3.64613 0.818359 3.41602C0.818359 3.1859 1.00491 2.99935 1.23503 2.99935H5.40169ZM3.93612 12.3571C4.03315 13.198 4.74523 13.8327 5.5918 13.8327H9.37825C10.2248 13.8327 10.9369 13.198 11.0339 12.3571L12.0175 3.83268H2.95253L3.93612 12.3571ZM6.23503 5.91602C6.46514 5.91602 6.65169 6.10256 6.65169 6.33268V11.3327C6.65169 11.5628 6.46514 11.7493 6.23503 11.7493C6.00491 11.7493 5.81836 11.5628 5.81836 11.3327V6.33268C5.81836 6.10256 6.00491 5.91602 6.23503 5.91602ZM9.15169 6.33268C9.15169 6.10256 8.96514 5.91602 8.73503 5.91602C8.50491 5.91602 8.31836 6.10256 8.31836 6.33268V11.3327C8.31836 11.5628 8.50491 11.7493 8.73503 11.7493C8.96514 11.7493 9.15169 11.5628 9.15169 11.3327V6.33268Z" fill="#F34E4E"/> </svg></span></button></div>
+                </div>
+                <div class="tr" role="row">
+                  <div class="td w-133" role="cell">1st Jan 2026</div>
+                  <div class="td w-231" role="cell">Limited Data for Planning</div>
+                  <div class="td w-132" role="cell">Red Sea Global</div>
+                  <div class="td w-459" role="cell">Urban planners lack real-time transit data to make informed decisions on improving infrastructure and operations.</div>
+                  <div class="td w-114" role="cell"><button type="button" class="action-btn"><span aria-hidden="true"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M6.23503 2.99935H8.73503C8.73503 2.30899 8.17538 1.74935 7.48503 1.74935C6.79467 1.74935 6.23503 2.30899 6.23503 2.99935ZM5.40169 2.99935C5.40169 1.84876 6.33443 0.916016 7.48503 0.916016C8.63562 0.916016 9.56836 1.84876 9.56836 2.99935H13.735C13.9651 2.99935 14.1517 3.1859 14.1517 3.41602C14.1517 3.64613 13.9651 3.83268 13.735 3.83268H12.8564L11.8618 12.4526C11.7162 13.7141 10.6481 14.666 9.37825 14.666H5.5918C4.32195 14.666 3.25383 13.714 3.10827 12.4526L2.11367 3.83268H1.23503C1.00491 3.83268 0.818359 3.64613 0.818359 3.41602C0.818359 3.1859 1.00491 2.99935 1.23503 2.99935H5.40169ZM3.93612 12.3571C4.03315 13.198 4.74523 13.8327 5.5918 13.8327H9.37825C10.2248 13.8327 10.9369 13.198 11.0339 12.3571L12.0175 3.83268H2.95253L3.93612 12.3571ZM6.23503 5.91602C6.46514 5.91602 6.65169 6.10256 6.65169 6.33268V11.3327C6.65169 11.5628 6.46514 11.7493 6.23503 11.7493C6.00491 11.7493 5.81836 11.5628 5.81836 11.3327V6.33268C5.81836 6.10256 6.00491 5.91602 6.23503 5.91602ZM9.15169 6.33268C9.15169 6.10256 8.96514 5.91602 8.73503 5.91602C8.50491 5.91602 8.31836 6.10256 8.31836 6.33268V11.3327C8.31836 11.5628 8.50491 11.7493 8.73503 11.7493C8.96514 11.7493 9.15169 11.5628 9.15169 11.3327V6.33268Z" fill="#F34E4E"/> </svg></span></button></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cta-row">
+              <button type="button" class="btn btn-outline pill">Map Existing Challenges</button>
+              <button type="button" class="btn btn-primary pill">Add New Challenge</button>
+            </div>
+          </div> -->
+
+          <div class="block">
+            <div class="field full">
+              <label>Select Added Value</label>
+              <div class="checkboxes">
+                <label><input type="checkbox" name="addedValue[]" value="Cost reduction"> Cost reduction</label>
+                <label><input type="checkbox" checked name="addedValue[]" value="Time saving"> Time saving</label>
+                <label><input type="checkbox" name="addedValue[]" value="Risk reduction"> Risk reduction</label>
+                <label><input type="checkbox" name="addedValue[]" value="Customer satisfaction"> Customer satisfaction</label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 3: Upload Resources -->
+        <section class="card step" data-step="3" hidden>
+          <div class="block attachments">
+            <div class="field full">
+              <label>Attachments</label>
+              <div class="attachments-card">
+                <div class="attachments-head">
+                  <div class="title">Upload Documents</div>
+                  <div class="subtitle">PNG, JPG, GIF, PDF, TXT, DOC, DOCX files are allowed (Max 10MB)</div>
+                </div>
+                <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Drag and drop or browse to choose a file">
+                  <div class="dropzone-inner">
+                    <div><svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M16 0C11.8828 0 8.64062 3.12891 8.1875 7.125C6.39453 7.42578 4.94141 8.64453 4.34375 10.3438C1.88281 11.0547 0 13.25 0 16C0 19.3242 2.67578 22 6 22H26C29.3242 22 32 19.3242 32 16C32 14.2383 31.1445 12.6641 29.9062 11.5625C29.6758 8.04688 26.8711 5.24609 23.3438 5.0625C22.1406 2.13281 19.3789 0 16 0ZM16 2C18.7617 2 20.9727 3.76953 21.75 6.28125L21.9688 7H23C25.7539 7 28 9.24609 28 12V12.5L28.4062 12.8125C29.3516 13.5195 30 14.7344 30 16C30 18.2773 28.2773 20 26 20H6C3.72266 20 2 18.2773 2 16C2 13.9805 3.44922 12.4141 5.28125 12.0938L5.9375 11.9688L6.0625 11.3125C6.36328 9.96484 7.55469 9 9 9H10V8C10 4.62891 12.6289 2 16 2ZM15 7V13.5625L12.7188 11.2812L11.2812 12.7188L15.2812 16.7188L16 17.4062L16.7188 16.7188L20.7188 12.7188L19.2812 11.2812L17 13.5625V7H15Z" fill="#979798"/>
 </svg>
 </div>
-                  <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose a file</div>
+                    <div>Drag and drop or <button type="button" class="link-btn" data-action="browse">browse</button> to choose a file</div>
+                  </div>
+                  <input id="file-input" type="file" accept="image/png,image/jpeg,image/jpg,image/gif,application/pdf,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>
                 </div>
-                <input id="file-input" type="file" accept="image/png,image/jpeg,image/gif" multiple hidden>
               </div>
             </div>
+
+            <div class="file-list" id="file-list" aria-live="polite"></div>
           </div>
-
-          <div class="file-list" id="file-list" aria-live="polite"></div>
+        </section>
+				
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <div class="left-actions">        
+          <button type="button" id="btn-back" class="btn btn-secondary" hidden>Back</button>
+          <button type="button" id="btn-cancel" class="btn btn-secondary">Cancel</button>
         </div>
-      </section>
-    </main>
-  </div>
-
-  <footer class="app-footer">
-    <div class="footer-inner">
-      <div class="left-actions">        <button type="button" id="btn-back" class="btn btn-secondary" hidden>Back</button>
-        <button type="button" id="btn-cancel" class="btn btn-secondary">Cancel</button></div>
-      <div class="right-actions">
-
-        <button type="submit" form="tech-form" id="btn-save" class="btn btn-primary">Save and Continue</button>
+        <div class="right-actions">
+          <button type="submit" form="tech-form" id="btn-save" class="btn btn-primary">Save and Continue</button>
+        </div>
       </div>
+    </footer>
+      </main>
     </div>
-  </footer>
 
-  <script src="script.js"></script>
+
+    <!-- JavaScript Functionality -->
+    <script>
+      (function() {
+        'use strict';
+
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initTechnologyForm);
+        } else {
+          initTechnologyForm();
+        }
+
+        function initTechnologyForm() {
+          // Initialize custom multiselect(s)
+          document.querySelectorAll('.multiselect').forEach(initMultiselect);
+
+          // Initialize steps sidebar
+          initStepsSidebar();
+
+          const form = document.getElementById('tech-form');
+          const btnCancel = document.getElementById('btn-cancel');
+          const btnBack = document.getElementById('btn-back');
+          const btnSave = document.getElementById('btn-save');
+
+          const stepEls = Array.from(document.querySelectorAll('.step'));
+          let currentStep = 1;
+
+          function showStep(step) {
+            currentStep = step;
+            stepEls.forEach(el => el.hidden = el.dataset.step !== String(step));
+            updateStepsSidebar(step);
+            if (btnBack) btnBack.hidden = step <= 1;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+
+          // Save & Continue behavior:
+          // - On step 1: allow form submit (handled below)
+          // - On step 2: prevent submit and go to step 3
+          // - On step 3: keep on step 3 (could finalize later)
+          if (btnSave) {
+            btnSave.addEventListener('click', function(e) {
+              if (currentStep === 2) {
+                e.preventDefault();
+                showStep(3);
+              } else if (currentStep === 3) {
+                e.preventDefault();
+                // Keep on step 3 or implement final submit here
+                console.log('Step 3 save clicked');
+                // File upload will be handled by the API integration script
+              }
+              // If currentStep === 1, we let the submit handler run
+            });
+          }
+
+          if (btnBack) {
+            btnBack.addEventListener('click', function() {
+              if (currentStep > 1) showStep(currentStep - 1);
+            });
+          }
+
+          if (btnCancel) {
+            btnCancel.addEventListener('click', function() {
+              if (confirm('Discard changes and exit?')) {
+                form?.reset();
+                document.querySelectorAll('.multiselect').forEach(function(ms) {
+                  resetMultiselect(ms);
+                });
+                showStep(1);
+              }
+            });
+          }
+
+          // On submit: go to step 2
+          if (form) {
+            form.addEventListener('submit', function(e) {
+              e.preventDefault();
+              const data = new FormData(form);
+              const payload = {};
+              
+              // Convert FormData to object
+              for (const [key, value] of data.entries()) {
+                if (payload[key]) {
+                  if (Array.isArray(payload[key])) {
+                    payload[key].push(value);
+                  } else {
+                    payload[key] = [payload[key], value];
+                  }
+                } else {
+                  payload[key] = value;
+                }
+              }
+
+              console.log('Step 1 submitted', payload);
+              showStep(2);
+            });
+          }
+
+          // Step 3: Drag/drop uploads
+          initFileUpload();
+
+          showStep(1);
+        }
+
+        // Steps Sidebar Implementation
+        function initStepsSidebar() {
+          const container = document.getElementById('stepsNav');
+          const labels = [
+            'Enter Information',
+            'Associated Challenges',
+            'Upload Resources'
+          ];
+
+          labels.forEach(function(label, index) {
+            const stepIndex = index + 1;
+            const item = document.createElement('div');
+            item.className = 'sidebar-item';
+            item.setAttribute('data-step', stepIndex);
+            item.innerHTML = 
+              '<div class="sidebar-icon"><span class="sidebar-num">' + stepIndex + '</span></div>' +
+              '<div class="sidebar-label">' + label + '</div>';
+            container.appendChild(item);
+          });
+        }
+
+        function updateStepsSidebar(activeStep) {
+          const items = document.querySelectorAll('.sidebar-item');
+          items.forEach(function(item, index) {
+            const stepIndex = index + 1;
+            item.className = 'sidebar-item';
+            if (stepIndex < activeStep) {
+              item.classList.add('completed');
+            } else if (stepIndex === activeStep) {
+              item.classList.add('active');
+            }
+          });
+        }
+
+        // Multiselect Implementation
+        function initMultiselect(container) {
+          const valuesEl = container.querySelector('.multiselect-values');
+          const menuEl = container.querySelector('.multiselect-menu');
+          const toggleEl = container.querySelector('.multiselect-toggle');
+          const hiddenName = container.dataset.name || 'values[]';
+          const options = JSON.parse(container.dataset.options || '[]');
+
+          const state = new Set();
+
+          menuEl.innerHTML = '';
+          options.forEach(function(opt) {
+            const optionEl = document.createElement('div');
+            optionEl.className = 'multiselect-option';
+            optionEl.setAttribute('role', 'option');
+            optionEl.setAttribute('aria-selected', 'false');
+            optionEl.textContent = opt;
+            optionEl.addEventListener('click', function() {
+              if (state.has(opt)) {
+                state.delete(opt);
+              } else {
+                state.add(opt);
+              }
+              render();
+            });
+            menuEl.appendChild(optionEl);
+          });
+
+          toggleEl.addEventListener('click', function() {
+            const open = container.classList.toggle('open');
+            toggleEl.setAttribute('aria-expanded', String(open));
+          });
+
+          document.addEventListener('click', function(e) {
+            if (!container.contains(e.target)) {
+              container.classList.remove('open');
+              toggleEl.setAttribute('aria-expanded', 'false');
+            }
+          });
+
+          function render() {
+            valuesEl.innerHTML = '';
+            container.querySelectorAll('input[type="hidden"]').forEach(function(el) {
+              el.remove();
+            });
+
+            container.querySelectorAll('.multiselect-option').forEach(function(el) {
+              const label = el.textContent || '';
+              const selected = state.has(label);
+              el.setAttribute('aria-selected', selected ? 'true' : 'false');
+              if (selected) {
+                const chip = document.createElement('span');
+                chip.className = 'chip';
+                chip.innerHTML = label + '<span class="chip-remove" aria-label="Remove ' + label + '"></span>';
+                chip.querySelector('.chip-remove').addEventListener('click', function() {
+                  state.delete(label);
+                  render();
+                });
+                valuesEl.appendChild(chip);
+
+                const hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = hiddenName;
+                hidden.value = label;
+                container.appendChild(hidden);
+              }
+            });
+          }
+
+          function resetToDefaults() {
+            state.clear();
+            const preselected = container.getAttribute('data-selected');
+            if (preselected) {
+              preselected.split('|').forEach(function(v) {
+                state.add(v);
+              });
+            }
+            render();
+          }
+
+          container.__reset = resetToDefaults;
+
+          const preselected = container.getAttribute('data-selected');
+          if (preselected) {
+            preselected.split('|').forEach(function(v) {
+              state.add(v);
+            });
+          } else {
+            // Don't add any default selections - let the API script handle this
+          }
+          render();
+        }
+
+        function resetMultiselect(container) {
+          if (container && typeof container.__reset === 'function') {
+            container.__reset();
+          }
+        }
+
+        // File Upload Implementation
+        function initFileUpload() {
+          const dropzone = document.getElementById('dropzone');
+          const fileInput = document.getElementById('file-input');
+          const fileList = document.getElementById('file-list');
+
+          function bytesToSize(bytes) {
+            const sizes = ['B','KB','MB','GB'];
+            if (bytes === 0) return '0 B';
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+            return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+          }
+
+          function addFiles(files) {
+            Array.from(files).forEach(function(file) {
+              const item = document.createElement('div');
+              item.className = 'file-item';
+              item.innerHTML = 
+                '<div class="meta">' +
+                  '<div class="name">' + file.name + '</div>' +
+                  '<div class="size">' + bytesToSize(file.size) + '</div>' +
+                '</div>' +
+                '<div class="file-actions">' +
+                  '<span class=""><svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                    '<g clip-path="url(#clip0_47608_110089)">' +
+                      '<path d="M17.3154 0.598633V7.11621L17.3447 7.14453L19.1494 8.91797L11.8027 16.1377L9.39062 17.2158L8.34961 16.1924L9.44531 13.8252L16.4248 6.96777L16.4541 6.93945V1.44336H6.61133V6.29883H1.66992V19.2119H16.4541V13.9893L17.3174 13.1436V20.0576H0.808594V5.7002L6 0.598633H17.3154ZM9.88281 14.9297L9.3291 16.1279L9.21875 16.3662L9.45801 16.2588L10.6738 15.7148L10.8047 15.6562L10.7031 15.5547L10.041 14.9004L9.94141 14.8018L9.88281 14.9297ZM15.3555 9.21582L10.4854 14L10.4141 14.0703L10.4844 14.1396L11.4805 15.125L11.5498 15.1934L11.6191 15.125L16.4932 10.335L16.5645 10.2646L16.4932 10.1943L15.4932 9.21582L15.4238 9.14844L15.3555 9.21582ZM16.7275 7.86719L16.1055 8.47852L16.0332 8.54883L16.1055 8.61914L17.1055 9.59766L17.1738 9.66504L17.2432 9.59766L17.8633 8.98828L17.9346 8.91895L17.8633 8.84863L16.8652 7.86719L16.7959 7.7998L16.7275 7.86719ZM5.58105 2.20703L2.44922 5.28711L2.27832 5.45508H5.74805V2.04199L5.58105 2.20703Z" fill="#BC6322" stroke="#BC6322" stroke-width="0.196556"/>' +
+                    '</g>' +
+                    '<defs>' +
+                      '<clipPath id="clip0_47608_110089">' +
+                        '<rect width="20" height="19.6556" fill="white" transform="translate(0 0.5)"/>' +
+                      '</clipPath>' +
+                    '</defs>' +
+                  '</svg></span>' +
+                  '<span class="delete" title="Remove"><svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                    '<g clip-path="url(#clip0_47608_110112)">' +
+                      '<path fill-rule="evenodd" clip-rule="evenodd" d="M1.73633 4.44922H18.6541L17.1368 20.2917H3.25366L1.73633 4.44922ZM3.14704 5.73127L4.41879 19.0097H15.9716L17.2434 5.73127H3.14704Z" fill="#BC6322"/>' +
+                      '<path fill-rule="evenodd" clip-rule="evenodd" d="M6.37933 0.808594H14.0121L15.409 5.05311L14.1912 5.45388L13.0843 2.09065H7.30709L6.20022 5.45389L4.98242 5.0531L6.37933 0.808594Z" fill="#BC6322"/>' +
+                      '<path fill-rule="evenodd" clip-rule="evenodd" d="M10.8377 9.28125V15.456H9.55566V9.28125H10.8377Z" fill="#BC6322"/>' +
+                    '</g>' +
+                    '<defs>' +
+                      '<clipPath id="clip0_47608_110112">' +
+                        '<rect width="20" height="20" fill="white" transform="translate(0 0.5)"/>' +
+                      '</clipPath>' +
+                    '</defs>' +
+                  '</svg></span>' +
+                '</div>';
+              item.querySelector('.delete').addEventListener('click', function() {
+                item.remove();
+              });
+              fileList?.appendChild(item);
+            });
+          }
+
+          if (dropzone && fileInput && fileList) {
+            dropzone.addEventListener('click', function(e) {
+              const target = e.target;
+              if (target && target.closest('[data-action="browse"]')) {
+                fileInput.click();
+              }
+            });
+            dropzone.addEventListener('dragover', function(e) { 
+              e.preventDefault(); 
+              dropzone.classList.add('drag'); 
+            });
+            dropzone.addEventListener('dragleave', function() {
+              dropzone.classList.remove('drag');
+            });
+            dropzone.addEventListener('drop', function(e) {
+              e.preventDefault();
+              dropzone.classList.remove('drag');
+              if (e.dataTransfer?.files?.length) {
+                addFiles(e.dataTransfer.files);
+              }
+            });
+            fileInput.addEventListener('change', function() {
+              if (fileInput.files?.length) {
+                addFiles(fileInput.files);
+                fileInput.value = '';
+              }
+            });
+          }
+        }
+
+      })();
+    </script>
+
+    <!-- External API Integration Script -->
+    <script src="script.js"></script>
+  </div>
 </body>
 </html>
