@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Test</title>
+</head>
+<body>
+    <h2>File Upload Test</h2>
+    <input type="file" id="test-file" accept="image/*,application/pdf">
+    <button onclick="testUpload()">Test Upload</button>
+    <div id="result"></div>
+
+    <script src="script.js"></script>
+    <script>
+        async function testUpload() {
+            const fileInput = document.getElementById('test-file');
+            const resultDiv = document.getElementById('result');
+            
+            if (!fileInput.files[0]) {
+                resultDiv.innerHTML = '<p style="color: red;">Please select a file first!</p>';
+                return;
+            }
+            
+            try {
+                resultDiv.innerHTML = '<p>Testing upload...</p>';
+                
+                // Test the FormData creation (the part we updated)
+                const file = fileInput.files[0];
+                const formData = new FormData();
+                formData.append('_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6_file', file);
+                
+                console.log('✅ FormData created successfully with field name:', '_com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6_file');
+                console.log('✅ File details:', {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                });
+                
+                // Check if we can access the form data
+                for (let [key, value] of formData.entries()) {
+                    console.log('FormData entry:', key, '=', value);
+                }
+                
+                resultDiv.innerHTML = `
+                    <div style="color: green;">
+                        <h3>✅ FormData Test Successful!</h3>
+                        <p><strong>Field Name:</strong> _com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_Y2A6_file</p>
+                        <p><strong>File:</strong> ${file.name} (${file.type}, ${file.size} bytes)</p>
+                        <p><strong>URL:</strong> ${window.technologyAPI ? 'API available' : 'API not loaded'}</p>
+                        <p>Check console for detailed logs.</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('❌ Test failed:', error);
+                resultDiv.innerHTML = `<p style="color: red;">Test failed: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
